@@ -6,5 +6,5 @@ class View:
     def __init__(self):
         print('Startei o view daqui!')
 
-    def Menu():
+    def Menu(self):
         print('Exibiting the menu here!')
