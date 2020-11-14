@@ -4,7 +4,9 @@
 class View:
 
     def __init__(self):
-        print('Startei o view daqui!')
+        self.start = 'OK'
+        
 
-    def Menu(self):
-        print('Exibiting the menu here!')
+    def PrintMenu(self):
+        print('############## Lanchonete PySnack ##############')
+        print('Escolha a opção desejada:\n')
