@@ -1,1 +1,1 @@
-# Master
+# Adjusting project structure
