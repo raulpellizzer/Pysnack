@@ -13,19 +13,38 @@ from model import Model
 
 class Controller:
 
+    ### Class Constructor
+    #
     def __init__(self):
         self.view = View()
         self.model = Model()
 
 
+    ### Prints the main menu for the application
+    #
+    #
     def PrintMenu(self):
-        os.system('cls')
+        # os.system('cls')
         self.menuOption = self.view.PrintMenu()
 
 
+    ### Prints information about the app
+    #
+    #
     def PrintAboutApp(self):
         about = self.model.PrintAboutApp()
         self.view.PrintAboutApp(about)
+
+
+    ### FINISH DESCRIPTION
+    #
+    # @param   type var - description
+    #
+    # @return   type 
+    #
+    def InitializeSetup(self):
+        self.model.InitializeTables()
+
 
 
 
@@ -36,7 +55,10 @@ class Controller:
 
 
 controller = Controller()
+controller.InitializeSetup()
+
 controller.PrintMenu()
+# controller.menuOption = 10
 
 while (controller.menuOption != 10):
     if (controller.menuOption == 1):
@@ -52,7 +74,7 @@ while (controller.menuOption != 10):
         #something here
 
     elif (controller.menuOption == 4):
-        print('You choose option 4 . . .')   # Voltar ao Menu Principal (comidas e bebidas, mostrar itens disponiveis)
+        print('You choose option 4 . . .')   # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
         controller.PrintMenu()
 
     elif (controller.menuOption == 5):

@@ -3,17 +3,23 @@
 
 class View:
 
+    ### Class Constructor
+    #
     def __init__(self):
         self.start = 'OK'        
 
 
+    ### Prints the main menu for the application
+    #
+    # @return   integer
+    #
     def PrintMenu(self):
         print('############## Lanchonete PySnack ##############')
         print('Escolha a opção desejada . . .\n')
         print('1 - Cadastrar Novo Produto')
         print('2 - Alterar Produto')
         print('3 - Remover Produto')
-        print('4 - Voltar ao Menu Principal')
+        print('4 - Exibir Menu')
         print('5 - Novo Pedido')
         print('6 - Ver Estatísticas')
         print('7 - Sobre o PySnack')
@@ -34,7 +40,11 @@ class View:
             except:
                 print('Opção Inválida, digite novamente')
 
-    
+
+    ### Prints information about the app
+    #
+    # @param   string about - the text about the application
+    #
     def PrintAboutApp(self, about):
         print(about)
         print('\n\n')
