@@ -1,9 +1,14 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys
+import os
 
 sys.path.append('../view')
-from View import View
+sys.path.append('../model')
+
+from view import View
+from model import Model
 
 class Controller:
 
@@ -11,4 +16,10 @@ class Controller:
         self.view = View()
 
 
-ctrl = Controller()
+    def PrintMenu(self):
+        os.system('cls')
+        self.menuOption = self.view.PrintMenu()
+
+
+controller = Controller()
+controller.PrintMenu()
