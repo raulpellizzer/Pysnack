@@ -33,3 +33,8 @@ class View:
 
             except:
                 print('Opção Inválida, digite novamente')
+
+    
+    def PrintAboutApp(self, about):
+        print(about)
+        print('\n\n')
