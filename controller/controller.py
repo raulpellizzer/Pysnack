@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import time
 import sys
 import os
 
@@ -14,6 +15,7 @@ class Controller:
 
     def __init__(self):
         self.view = View()
+        self.model = Model()
 
 
     def PrintMenu(self):
@@ -21,5 +23,61 @@ class Controller:
         self.menuOption = self.view.PrintMenu()
 
 
+    def PrintAboutApp(self):
+        about = self.model.PrintAboutApp()
+        self.view.PrintAboutApp(about)
+
+
+
+
+
+
+
+
+
 controller = Controller()
 controller.PrintMenu()
+
+while (controller.menuOption != 10):
+    if (controller.menuOption == 1):
+        print('You choose option 1 . . .')   # Cadastrar Novo Produto
+        #something here
+
+    elif (controller.menuOption == 2):
+        print('You choose option 2 . . .')   # Alterar Produto
+        #something here
+
+    elif (controller.menuOption == 3):
+        print('You choose option 3 . . .')   # Remover Produto
+        #something here
+
+    elif (controller.menuOption == 4):
+        print('You choose option 4 . . .')   # Voltar ao Menu Principal (comidas e bebidas, mostrar itens disponiveis)
+        controller.PrintMenu()
+
+    elif (controller.menuOption == 5):
+        print('You choose option 5 . . .')   # Novo Pedido
+        #something here
+
+    elif (controller.menuOption == 6):
+        print('You choose option 6 . . .')   # Ver Estatísticas
+        #something here
+
+    elif (controller.menuOption == 7):
+        controller.PrintAboutApp()
+
+    elif (controller.menuOption == 8):
+        print('You choose option 8 . . .')   # Contate o Suporte
+        #something here
+
+    elif (controller.menuOption == 9):
+        print('You choose option 9 . . .')   # Registrar Novo Usuário
+        #something here
+
+    elif (controller.menuOption == 10):
+        print('You choose option 10 . . .')   # Sair
+        break
+        #something here
+
+    time.sleep(4)
+    controller.PrintMenu()
