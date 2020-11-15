@@ -24,7 +24,7 @@ class Controller:
     #
     #
     def PrintMenu(self):
-        os.system('cls')
+        # os.system('cls')
         self.menuOption = self.view.PrintMenu()
 
 
@@ -56,7 +56,9 @@ class Controller:
 
 controller = Controller()
 controller.InitializeSetup()
+
 controller.PrintMenu()
+# controller.menuOption = 10
 
 while (controller.menuOption != 10):
     if (controller.menuOption == 1):
