@@ -81,3 +81,32 @@ class Model:
                 print(err)
         else:
             nothing = '' # (to be implemented - sqlProducts)
+
+
+    ### Register User in the database
+    #
+    # @param   object newCredentials - user credentials
+    #
+    # @return   boolean
+    #
+    def RegisterNewUser(self, newCredentials):
+        validation = self.ValidateCredentials(newCredentials)
+        
+        if (validation):
+            something = ''
+            # Register in DB (remenber to encrypt pass) - CONTINUE HERE - VALIDATION IS WORKING
+
+        return validation # validate also if user registered
+
+
+    def ValidateCredentials(self, newCredentials):
+        validation = False
+
+        if (
+            newCredentials['userName'] != '' and newCredentials['password'] != '' and newCredentials['confirmPassword'] != ''
+            and len(newCredentials['userName']) >= 5 and len(newCredentials['password']) >= 5
+            and newCredentials['password'] == newCredentials['confirmPassword']
+        ):
+            validation = True
+
+        return validation
