@@ -90,15 +90,24 @@ class Model:
     # @return   boolean
     #
     def RegisterNewUser(self, newCredentials):
-        validation = self.ValidateCredentials(newCredentials)
+        registerValidation = False
+        validation         = self.ValidateCredentials(newCredentials)
         
         if (validation):
-            something = ''
-            # Register in DB (remenber to encrypt pass) - CONTINUE HERE - VALIDATION IS WORKING
+            userValidation = self.CheckUserInDB(newCredentials['userName'])
 
-        return validation # validate also if user registered
+            if (userValidation == False):
+                registerValidation = self.RegisterUser(newCredentials)
+
+        return registerValidation
 
 
+    ### Check if the credentials are valid
+    #
+    # @param   object newCredentials - user credentials
+    #
+    # @return   boolean
+    #
     def ValidateCredentials(self, newCredentials):
         validation = False
 
@@ -110,3 +119,57 @@ class Model:
             validation = True
 
         return validation
+
+
+    ### Check if the user already exists in the database
+    #
+    # @param   string userName - username
+    #
+    # @return   boolean
+    #
+    def CheckUserInDB(self, userName):
+        conn = self.CreateDBConnection(self.dbFile)
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute("SELECT name FROM Users")
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+                if (row[0] == userName):
+                    return True
+
+            return False
+
+
+    ### Inserts new user to the database
+    #
+    # @param   object newCredentials - user credentials
+    #
+    # @return   boolean
+    #
+    def RegisterUser(self, newCredentials):
+
+        userName          = newCredentials['userName']
+        password          = newCredentials['password']
+        encryptedPassword = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+
+        sql = ''' INSERT INTO Users (name, password) VALUES ('%s', "%s") ''' % (userName, encryptedPassword) 
+
+        conn = self.CreateDBConnection(self.dbFile)
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+
+            return True
+        return False
+
+        # hashed = b'$2b$12$Gg85HfswEW3mAWMNMthAQOcrlQeIqwq9.T4.8xihR.LyESb/DvoJm'
+        # For later on, on login verification:
+        # if bcrypt.checkpw(password.encode('utf8'), hashed):
+        #     print("It Matches!")
+        # else:
+        #     print("It Does not Match")

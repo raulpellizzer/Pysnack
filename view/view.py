@@ -70,7 +70,7 @@ class View:
     # @return   object
     #
     def GetNewUserCredentials(self):
-        os.system('cls')
+        # os.system('cls')
         userName        = str(input('Cadastre seu usuário: '))
         password        = str(input('Cadastre sua senha: '))
         confirmPassword = str(input('Confirme sua senha: '))
@@ -91,3 +91,10 @@ class View:
     def PrintAboutApp(self, about):
         print(about)
         print('\n\n')
+
+
+    ### Prints a message for the user
+    #
+    #
+    def PrintMessage(self, message):
+        print(message)

@@ -32,7 +32,7 @@ class Controller:
     #
     #
     def PrintLoginScreen(self):
-        os.system('cls')
+        # os.system('cls')
         self.loginOption = self.view.PrintLoginScreen()
 
 
@@ -57,7 +57,11 @@ class Controller:
         validation = self.model.RegisterNewUser(newCredentials)
 
         if (validation):
-            print('Credenciais OK!!')
+            message = 'Usuário cadastrado com sucesso!'
+        else:
+            message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
+        
+        self.view.PrintMessage(message)
 
 
 
@@ -79,8 +83,7 @@ while (not(controller.userLoggedIn)):
         controller.userLoggedIn = True
         #something here
 
-    elif (controller.loginOption == 2):
-        # Registrar Novo Usuário
+    elif (controller.loginOption == 2):      # Registrar Novo Usuário
         newCredentials = controller.view.GetNewUserCredentials()
         controller.RegisterNewUser(newCredentials)
         time.sleep(5)
