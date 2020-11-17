@@ -16,16 +16,24 @@ class Controller:
     ### Class Constructor
     #
     def __init__(self):
-        self.view = View()
+        self.view  = View()
         self.model = Model()
 
 
     ### Prints the main menu for the application
     #
     #
-    def PrintMenu(self):
+    def PrintMainMenu(self):
         # os.system('cls')
-        self.menuOption = self.view.PrintMenu()
+        self.menuOption = self.view.PrintMainMenu()
+
+
+    ### Prints the main menu for the application
+    #
+    #
+    def PrintLoginScreen(self):
+        # os.system('cls')
+        self.loginOption = self.view.PrintLoginScreen()
 
 
     ### Prints information about the app
@@ -36,17 +44,24 @@ class Controller:
         self.view.PrintAboutApp(about)
 
 
-    ### FINISH DESCRIPTION
+    ### Initializes the database setup
     #
-    # @param   type var - description
-    #
-    # @return   type 
     #
     def InitializeSetup(self):
         self.model.InitializeTables()
 
+    ### Register a new user into the application
+    #
+    #
+    def RegisterNewUser(self, newCredentials):
+        validation = self.model.RegisterNewUser(newCredentials)
 
-
+        if (validation):
+            message = 'Usuário cadastrado com sucesso!'
+        else:
+            message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
+        
+        self.view.PrintMessage(message)
 
 
 
@@ -55,12 +70,32 @@ class Controller:
 
 
 controller = Controller()
+controller.userLoggedIn = False
 controller.InitializeSetup()
 
-controller.PrintMenu()
-# controller.menuOption = 10
+# Login/Register screen here
+controller.PrintLoginScreen()
+while (not(controller.userLoggedIn)):
+    if (controller.loginOption == 1):
+        print('You choose option 1 . . .')   # Entrar
 
-while (controller.menuOption != 10):
+
+        controller.userLoggedIn = True
+        #something here
+
+    elif (controller.loginOption == 2):      # Registrar Novo Usuário
+        newCredentials = controller.view.GetNewUserCredentials()
+        controller.RegisterNewUser(newCredentials)
+        time.sleep(5)
+        controller.PrintLoginScreen()
+
+
+
+
+controller.PrintMainMenu()
+# controller.menuOption = 9
+
+while (controller.menuOption != 9):
     if (controller.menuOption == 1):
         print('You choose option 1 . . .')   # Cadastrar Novo Produto
         #something here
@@ -75,7 +110,7 @@ while (controller.menuOption != 10):
 
     elif (controller.menuOption == 4):
         print('You choose option 4 . . .')   # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
-        controller.PrintMenu()
+        controller.PrintMainMenu()
 
     elif (controller.menuOption == 5):
         print('You choose option 5 . . .')   # Novo Pedido
@@ -93,13 +128,8 @@ while (controller.menuOption != 10):
         #something here
 
     elif (controller.menuOption == 9):
-        print('You choose option 9 . . .')   # Registrar Novo Usuário
-        #something here
-
-    elif (controller.menuOption == 10):
-        print('You choose option 10 . . .')   # Sair
+        print('You choose option 9 . . .')   # Sair
         break
-        #something here
 
     time.sleep(4)
-    controller.PrintMenu()
+    controller.PrintMainMenu()
