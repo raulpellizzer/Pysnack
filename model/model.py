@@ -167,9 +167,34 @@ class Model:
             return True
         return False
 
-        # hashed = b'$2b$12$Gg85HfswEW3mAWMNMthAQOcrlQeIqwq9.T4.8xihR.LyESb/DvoJm'
-        # For later on, on login verification:
-        # if bcrypt.checkpw(password.encode('utf8'), hashed):
-        #     print("It Matches!")
-        # else:
-        #     print("It Does not Match")
+ 
+    ### Authenticates the user when logging in
+    #
+    # @param   object credentials - user credentials
+    #
+    # @return   boolean
+    #
+    def AuthenticateUser(self, credentials):
+        login    = credentials['userName']
+        password = credentials['password']
+        auth     = False
+
+        conn = self.CreateDBConnection(self.dbFile)
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute("SELECT name, password FROM Users")
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+                dbUserName = row[0]
+                dbPassword = row[1]
+
+                dbPassword = dbPassword[2:len(dbPassword)-1]
+                dbPassword = bytes(dbPassword, 'utf8')
+
+                if (login == dbUserName and bcrypt.checkpw(password.encode('utf8'), dbPassword  )):
+                    auth = True
+
+        return auth

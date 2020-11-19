@@ -64,6 +64,17 @@ class Controller:
         self.view.PrintMessage(message)
 
 
+    ### Authenticates the user when logging in
+    #
+    # @param   object credentials - user credentials
+    #
+    # @return   boolean
+    #
+    def AuthenticateUser(self, credentials):
+        auth = self.model.AuthenticateUser(credentials)
+        return auth
+
+
 
 
 
@@ -72,21 +83,28 @@ class Controller:
 controller = Controller()
 controller.userLoggedIn = False
 controller.InitializeSetup()
-
-# Login/Register screen here
 controller.PrintLoginScreen()
+
 while (not(controller.userLoggedIn)):
     if (controller.loginOption == 1):
-        print('You choose option 1 . . .')   # Entrar
 
+        credentials = controller.view.GetUserCredentials()
+        auth = controller.AuthenticateUser(credentials)
 
-        controller.userLoggedIn = True
-        #something here
+        if (auth):
+            controller.view.PrintMessage('Usuário Autenticado com sucesso!\n')
+            controller.userLoggedIn = True
+            break
+        else:
+            controller.view.PrintMessage('Usuário ou senha incorretos.\n')
+        
+        time.sleep(3)
+        controller.PrintLoginScreen()
 
-    elif (controller.loginOption == 2):      # Registrar Novo Usuário
+    elif (controller.loginOption == 2):
         newCredentials = controller.view.GetNewUserCredentials()
         controller.RegisterNewUser(newCredentials)
-        time.sleep(5)
+        time.sleep(3)
         controller.PrintLoginScreen()
 
 
