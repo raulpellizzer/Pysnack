@@ -83,6 +83,22 @@ class View:
 
         return data
 
+    ### Request user credentials
+    #
+    # @return   object
+    #
+    def GetUserCredentials(self):
+        # os.system('cls')
+        userName        = str(input('Entre com seu usuário: '))
+        password        = str(input('Entre com sua senha: '))
+
+        data = {
+            "userName": userName,
+            "password": password
+        }
+
+        return data
+
 
     ### Prints information about the app
     #
