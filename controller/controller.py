@@ -50,6 +50,7 @@ class Controller:
     def InitializeSetup(self):
         self.model.InitializeTables()
 
+
     ### Register a new user into the application
     #
     #

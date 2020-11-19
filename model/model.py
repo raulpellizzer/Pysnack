@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# # Example of bcrypt usage
-# password = "MinhaSenha123"
-# hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
-# print(hashed)
-
 import sqlite3
 import bcrypt
 from sqlite3 import Error

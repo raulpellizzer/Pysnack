@@ -8,7 +8,7 @@ class View:
     ### Class Constructor
     #
     def __init__(self):
-        self.start = 'OK'        
+        self.start = 'OK'
 
 
     ### Prints the main menu for the application
@@ -56,7 +56,7 @@ class View:
         while(not(optionValid)):
             try:
                 option = int(input('Opção: '))
-                if (option > 0 and option < 4):
+                if (option > 0 and option < 3):
                     optionValid = True
                     return option
                 else:
