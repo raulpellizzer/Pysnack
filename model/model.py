@@ -37,7 +37,7 @@ class Model:
             self.conn.close()
 
 
-    ### Initializes tables for the app
+    ### Created database connection
     #
     # @param   string dbFile - the path for the database file
     #
@@ -61,13 +61,13 @@ class Model:
     #
     def CreateTable(self, table):
 
-        if (table == 'users'):
+        if table == 'users':
             sql = """ CREATE TABLE IF NOT EXISTS Users (
                             name text NOT NULL,
                             password text NOT NULL
                         ); """
 
-        elif (table == 'products'):
+        elif table == 'products':
             sql = """ CREATE TABLE IF NOT EXISTS Products (
                             id integer PRIMARY KEY AUTOINCREMENT,
                             name text NOT NULL,
@@ -93,10 +93,10 @@ class Model:
         registerValidation = False
         validation         = self.ValidateCredentials(newCredentials)
         
-        if (validation):
+        if validation:
             userValidation = self.CheckUserInDB(newCredentials['userName'])
 
-            if (userValidation == False):
+            if userValidation == False:
                 registerValidation = self.RegisterUser(newCredentials)
 
         return registerValidation
@@ -137,7 +137,7 @@ class Model:
             conn.close()
 
             for row in rows:
-                if (row[0] == userName):
+                if row[0] == userName:
                     return True
 
             return False
@@ -194,7 +194,7 @@ class Model:
                 dbPassword = dbPassword[2:len(dbPassword)-1]
                 dbPassword = bytes(dbPassword, 'utf8')
 
-                if (login == dbUserName and bcrypt.checkpw(password.encode('utf8'), dbPassword  )):
+                if login == dbUserName and bcrypt.checkpw(password.encode('utf8'), dbPassword):
                     auth = True
 
         return auth

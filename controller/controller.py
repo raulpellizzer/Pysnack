@@ -94,13 +94,13 @@ controller.userLoggedIn = False
 controller.InitializeSetup()
 controller.PrintLoginScreen()
 
-while (not(controller.userLoggedIn)):
-    if (controller.loginOption == 1):
+while not(controller.userLoggedIn):
+    if controller.loginOption == 1:
 
         credentials = controller.view.GetUserCredentials()
         auth = controller.AuthenticateUser(credentials)
 
-        if (auth):
+        if auth:
             controller.view.PrintMessage('Usuário Autenticado com sucesso!\n')
             controller.userLoggedIn = True
             break
@@ -110,11 +110,11 @@ while (not(controller.userLoggedIn)):
         time.sleep(3)
         controller.PrintLoginScreen()
 
-    elif (controller.loginOption == 2):
+    elif controller.loginOption == 2:
         newCredentials = controller.view.GetNewUserCredentials()
         validation = controller.RegisterNewUser(newCredentials)
 
-        if (validation):
+        if validation:
             message = 'Usuário cadastrado com sucesso!'
         else:
             message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
@@ -129,46 +129,46 @@ while (not(controller.userLoggedIn)):
 
 controller.PrintMainMenu()
 
-while (controller.menuOption != 9):
-    if (controller.menuOption == 1):         # Cadastrar Novo Produto
+while controller.menuOption != 9:
+    if controller.menuOption == 1:         # Cadastrar Novo Produto
         productData = controller.view.RequestProductData()
-        result = controller.RegisterNewProduct(productData)
+        result      = controller.RegisterNewProduct(productData)
 
-        if (result):
+        if result:
             message = 'Produto cadastrado com sucesso!'
         else:
             message = 'Ocorreu um erro ao cadastrar o produto. Tente novamente.'
 
         controller.view.PrintMessage(message)
 
-    elif (controller.menuOption == 2):       # Alterar Produto
+    elif controller.menuOption == 2:       # Alterar Produto
         print('You choose option 2 . . .')
         #something here
 
-    elif (controller.menuOption == 3):       # Remover Produto
+    elif controller.menuOption == 3:       # Remover Produto
         print('You choose option 3 . . .')
         #something here
 
-    elif (controller.menuOption == 4):       # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
+    elif controller.menuOption == 4:       # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
         print('You choose option 4 . . .')
         controller.PrintMainMenu()
 
-    elif (controller.menuOption == 5):       # Novo Pedido
+    elif controller.menuOption == 5:       # Novo Pedido
         print('You choose option 5 . . .')
         #something here
 
-    elif (controller.menuOption == 6):       # Ver Estatísticas (?)
+    elif controller.menuOption == 6:       # Ver Estatísticas (?)
         print('You choose option 6 . . .')
         #something here
 
-    elif (controller.menuOption == 7):       # Sobre
+    elif controller.menuOption == 7:       # Sobre
         controller.PrintAboutApp()
 
-    elif (controller.menuOption == 8):       # Contate o Suporte
+    elif controller.menuOption == 8:       # Contate o Suporte
         print('You choose option 8 . . .')
         #something here
 
-    elif (controller.menuOption == 9):       # Sair
+    elif controller.menuOption == 9:       # Sair
         break
 
     time.sleep(4)

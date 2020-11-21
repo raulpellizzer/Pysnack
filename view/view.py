@@ -29,10 +29,10 @@ class View:
         print('9 - Sair\n')
 
         optionValid = False
-        while(not(optionValid)):
+        while not(optionValid):
             try:
                 option = int(input('Opção: '))
-                if (option > 0 and option < 11):
+                if option > 0 and option < 11:
                     optionValid = True
                     return option
                 else:
@@ -53,10 +53,10 @@ class View:
         print('2 - Registrar Novo Usuário')
 
         optionValid = False
-        while(not(optionValid)):
+        while not(optionValid):
             try:
                 option = int(input('Opção: '))
-                if (option > 0 and option < 3):
+                if option > 0 and option < 3:
                     optionValid = True
                     return option
                 else:
@@ -125,7 +125,7 @@ class View:
         producDescription = str(input('Breve descrição do produto: '))
         
         optionValid = False
-        while (not(optionValid)):
+        while not(optionValid):
             try:
                 pricePerUnit = float(input('Preço de venda por unidade: '))
                 optionValid = True
