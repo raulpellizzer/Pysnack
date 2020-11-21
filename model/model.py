@@ -33,9 +33,8 @@ class Model:
 
         if self.conn is not None:
             self.CreateTable('users')
+            self.CreateTable('products')
             self.conn.close()
-
-            # self.CreateTable('products') # implement
 
 
     ### Initializes tables for the app
@@ -61,21 +60,27 @@ class Model:
     # @param   string table - type of table to be created
     #
     def CreateTable(self, table):
-        sqlUsers = """ CREATE TABLE IF NOT EXISTS Users (
+
+        if (table == 'users'):
+            sql = """ CREATE TABLE IF NOT EXISTS Users (
                             name text NOT NULL,
                             password text NOT NULL
                         ); """
 
-        # sqlProducts = (to be implemented)
+        elif (table == 'products'):
+            sql = """ CREATE TABLE IF NOT EXISTS Products (
+                            id integer PRIMARY KEY AUTOINCREMENT,
+                            name text NOT NULL,
+                            description text NOT NULL,
+                            unitPrice real
+                        ); """
 
-        if (table == 'users'):
-            try:
-                c = self.conn.cursor()
-                c.execute(sqlUsers)
-            except Error as err:
-                print(err)
-        else:
-            nothing = '' # (to be implemented - sqlProducts)
+        try:
+            c = self.conn.cursor()
+            c.execute(sql)
+
+        except Error as err:
+            print(err)
 
 
     ### Register User in the database
@@ -150,7 +155,7 @@ class Model:
         password          = newCredentials['password']
         encryptedPassword = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
-        sql = ''' INSERT INTO Users (name, password) VALUES ('%s', "%s") ''' % (userName, encryptedPassword) 
+        sql = ''' INSERT INTO Users (name, password) VALUES ('%s', "%s") ''' % (userName, encryptedPassword)
 
         conn = self.CreateDBConnection(self.dbFile)
         if conn is not None:
@@ -193,3 +198,28 @@ class Model:
                     auth = True
 
         return auth
+
+
+    ### Inserts a new product into the database
+    #
+    # @param   object productData - ata about the new product
+    #
+    # @return   boolean
+    #
+    def RegisterNewProduct(self, productData):
+        productName       = productData['productName']
+        producDescription = productData['producDescription']
+        pricePerUnit      = productData['pricePerUnit']
+
+        sql = ''' INSERT INTO Products (name, description, unitPrice)
+                    VALUES ('%s', "%s", "%s") ''' % (productName, producDescription, pricePerUnit)
+
+        conn = self.CreateDBConnection(self.dbFile)
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+
+            return True
+        return False

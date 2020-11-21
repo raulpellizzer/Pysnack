@@ -51,18 +51,15 @@ class Controller:
         self.model.InitializeTables()
 
 
-    ### Register a new user into the application
+    ### Register User in the database
     #
+    # @param   object newCredentials - user credentials
+    #
+    # @return   boolean
     #
     def RegisterNewUser(self, newCredentials):
         validation = self.model.RegisterNewUser(newCredentials)
-
-        if (validation):
-            message = 'Usuário cadastrado com sucesso!'
-        else:
-            message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
-        
-        self.view.PrintMessage(message)
+        return validation
 
 
     ### Authenticates the user when logging in
@@ -74,6 +71,17 @@ class Controller:
     def AuthenticateUser(self, credentials):
         auth = self.model.AuthenticateUser(credentials)
         return auth
+
+
+    ### Creates new product in the database
+    #
+    # @param   object productData - data about the new product
+    #
+    # @return   boolean
+    #
+    def RegisterNewProduct(self, productData):
+        result = self.model.RegisterNewProduct(productData)
+        return result
 
 
 
@@ -104,7 +112,15 @@ while (not(controller.userLoggedIn)):
 
     elif (controller.loginOption == 2):
         newCredentials = controller.view.GetNewUserCredentials()
-        controller.RegisterNewUser(newCredentials)
+        validation = controller.RegisterNewUser(newCredentials)
+
+        if (validation):
+            message = 'Usuário cadastrado com sucesso!'
+        else:
+            message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
+        
+        controller.view.PrintMessage(message)
+
         time.sleep(3)
         controller.PrintLoginScreen()
 
@@ -112,42 +128,47 @@ while (not(controller.userLoggedIn)):
 
 
 controller.PrintMainMenu()
-# controller.menuOption = 9
 
 while (controller.menuOption != 9):
-    if (controller.menuOption == 1):
-        print('You choose option 1 . . .')   # Cadastrar Novo Produto
+    if (controller.menuOption == 1):         # Cadastrar Novo Produto
+        productData = controller.view.RequestProductData()
+        result = controller.RegisterNewProduct(productData)
+
+        if (result):
+            message = 'Produto cadastrado com sucesso!'
+        else:
+            message = 'Ocorreu um erro ao cadastrar o produto. Tente novamente.'
+
+        controller.view.PrintMessage(message)
+
+    elif (controller.menuOption == 2):       # Alterar Produto
+        print('You choose option 2 . . .')
         #something here
 
-    elif (controller.menuOption == 2):
-        print('You choose option 2 . . .')   # Alterar Produto
+    elif (controller.menuOption == 3):       # Remover Produto
+        print('You choose option 3 . . .')
         #something here
 
-    elif (controller.menuOption == 3):
-        print('You choose option 3 . . .')   # Remover Produto
-        #something here
-
-    elif (controller.menuOption == 4):
-        print('You choose option 4 . . .')   # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
+    elif (controller.menuOption == 4):       # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
+        print('You choose option 4 . . .')
         controller.PrintMainMenu()
 
-    elif (controller.menuOption == 5):
-        print('You choose option 5 . . .')   # Novo Pedido
+    elif (controller.menuOption == 5):       # Novo Pedido
+        print('You choose option 5 . . .')
         #something here
 
-    elif (controller.menuOption == 6):
-        print('You choose option 6 . . .')   # Ver Estatísticas
+    elif (controller.menuOption == 6):       # Ver Estatísticas (?)
+        print('You choose option 6 . . .')
         #something here
 
-    elif (controller.menuOption == 7):
+    elif (controller.menuOption == 7):       # Sobre
         controller.PrintAboutApp()
 
-    elif (controller.menuOption == 8):
-        print('You choose option 8 . . .')   # Contate o Suporte
+    elif (controller.menuOption == 8):       # Contate o Suporte
+        print('You choose option 8 . . .')
         #something here
 
-    elif (controller.menuOption == 9):
-        print('You choose option 9 . . .')   # Sair
+    elif (controller.menuOption == 9):       # Sair
         break
 
     time.sleep(4)

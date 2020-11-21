@@ -114,3 +114,29 @@ class View:
     #
     def PrintMessage(self, message):
         print(message)
+
+
+    ### Requests data about the new product from the user
+    #
+    # @return   object
+    #
+    def RequestProductData(self):
+        productName       = str(input('Entre com o nome do produto: '))
+        producDescription = str(input('Breve descrição do produto: '))
+        
+        optionValid = False
+        while (not(optionValid)):
+            try:
+                pricePerUnit = float(input('Preço de venda por unidade: '))
+                optionValid = True
+            except:
+                optionValid = False
+                print('Opção inválida. Entre com um número real.')
+
+        productData = {
+            "productName": productName,
+            "producDescription": producDescription,
+            "pricePerUnit": pricePerUnit
+        }
+
+        return productData
