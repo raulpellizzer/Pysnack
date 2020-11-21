@@ -41,7 +41,7 @@ class Controller:
     #
     def PrintAboutApp(self):
         about = self.model.PrintAboutApp()
-        self.view.PrintAboutApp(about)
+        self.view.PrintMessage(about)
 
 
     ### Initializes the database setup
@@ -82,6 +82,13 @@ class Controller:
     def RegisterNewProduct(self, productData):
         result = self.model.RegisterNewProduct(productData)
         return result
+
+    ### Show whats in the menu
+    #
+    #
+    def ShowMenuItens(self):
+        menu = self.model.GetMenuItens()
+        self.view.PrintMenuItens(menu)
 
 
 
@@ -150,8 +157,7 @@ while controller.menuOption != 9:
         #something here
 
     elif controller.menuOption == 4:       # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
-        print('You choose option 4 . . .')
-        controller.PrintMainMenu()
+        controller.ShowMenuItens()
 
     elif controller.menuOption == 5:       # Novo Pedido
         print('You choose option 5 . . .')
@@ -171,5 +177,5 @@ while controller.menuOption != 9:
     elif controller.menuOption == 9:       # Sair
         break
 
-    time.sleep(4)
+    time.sleep(5)
     controller.PrintMainMenu()

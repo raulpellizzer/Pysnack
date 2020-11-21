@@ -100,20 +100,12 @@ class View:
         return data
 
 
-    ### Prints information about the app
-    #
-    # @param   string about - the text about the application
-    #
-    def PrintAboutApp(self, about):
-        print(about)
-        print('\n\n')
-
-
     ### Prints a message for the user
     #
     #
     def PrintMessage(self, message):
         print(message)
+        print('\n')
 
 
     ### Requests data about the new product from the user
@@ -140,3 +132,8 @@ class View:
         }
 
         return productData
+
+    
+    def PrintMenuItens(self, menu):
+        print('Cardápio:\n')
+        print(menu)

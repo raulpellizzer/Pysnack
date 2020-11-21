@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from texttable import Texttable
+from sqlite3 import Error
 import sqlite3
 import bcrypt
-from sqlite3 import Error
 import os
 
 class Model:
@@ -223,3 +224,63 @@ class Model:
 
             return True
         return False
+
+
+    ### Retrieves all products from the database
+    #
+    # @return   string
+    #
+    def GetMenuItens(self):
+        conn      = self.CreateDBConnection(self.dbFile)
+        menuItens = []
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM Products")
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+                tempRow = {
+                    "productId": row[0],
+                    "productName": row[1],
+                    "productDescription": row[2],
+                    "unitPrice": row[3]
+                }
+
+                menuItens.append(tempRow)
+                tempRow = {}
+
+            menuTable = self.FormatMenuItens(menuItens)
+            return menuTable
+
+
+    ### Format data into a table format
+    #
+    # @param   arrray menuItens - product data
+    #
+    # @return   string
+    #
+    def FormatMenuItens(self, menuItens):
+        menu = Texttable()
+        
+        header = ['Codigo', 'Nome Produto', 'Descrição', 'Preço']
+        menu.header(header)
+
+        for item in menuItens:
+            productId          = item['productId']
+            productName        = item['productName']
+            productDescription = item['productDescription']
+            unitPrice          = item['unitPrice']
+
+            row = [productId, productName, productDescription, unitPrice]
+            menu.add_row(row)
+
+        menu.set_cols_width([6, 25, 50, 10])
+        menu.set_cols_align(['l','l','l', 'l'])
+        menu.set_cols_valign(['m','m', 'm', 'm'])
+        menu.set_deco(menu.HEADER | menu.VLINES)
+        menu.set_chars(['-','|','+','#'])
+        menuTable = menu.draw()
+
+        return menuTable
