@@ -91,6 +91,29 @@ class Controller:
         self.view.PrintMenuItens(menu)
 
 
+    ### Check if a product exists in the database
+    #
+    # @param   integer productId - product id
+    #
+    # @return   boolean
+    #
+    def CheckProductInDB(self, productId):
+        status = self.model.CheckProductInDB(productId)
+        return status
+
+
+    ### Update data about a product
+    #
+    # @param   integer productId - product id
+    # @param   object productData - new data to be updated
+    #
+    # @return   boolean
+    #
+    def UpdateProductData(self, productId, productData):
+        result = self.model.UpdateProductData(productId, productData)
+        return result
+
+
 
 
 
@@ -138,6 +161,7 @@ controller.PrintMainMenu()
 
 while controller.menuOption != 9:
     if controller.menuOption == 1:         # Cadastrar Novo Produto
+
         productData = controller.view.RequestProductData()
         result      = controller.RegisterNewProduct(productData)
 
@@ -149,10 +173,28 @@ while controller.menuOption != 9:
         controller.view.PrintMessage(message)
 
     elif controller.menuOption == 2:       # Alterar Produto
-        print('You choose option 2 . . .')
-        #something here
+
+        controller.ShowMenuItens()
+        productId = controller.view.RequestProductID()
+        status    = controller.CheckProductInDB(productId) 
+
+        if status:
+            productData = controller.view.RequestProductData()
+            result      = controller.UpdateProductData(productId, productData)
+
+            if result:
+                message = 'Produto alterado com sucesso!'
+            else: 
+                message = 'Ocorreu um erro ao atualizar o produto. Tente novamente.'
+
+            controller.view.PrintMessage(message)
+
+        else:
+            message = 'Produto não localizado!'
+            controller.view.PrintMessage(message)
 
     elif controller.menuOption == 3:       # Remover Produto
+
         print('You choose option 3 . . .')
         #something here
 
@@ -160,10 +202,12 @@ while controller.menuOption != 9:
         controller.ShowMenuItens()
 
     elif controller.menuOption == 5:       # Novo Pedido
+
         print('You choose option 5 . . .')
         #something here
 
     elif controller.menuOption == 6:       # Ver Estatísticas (?)
+
         print('You choose option 6 . . .')
         #something here
 
@@ -171,6 +215,7 @@ while controller.menuOption != 9:
         controller.PrintAboutApp()
 
     elif controller.menuOption == 8:       # Contate o Suporte
+
         print('You choose option 8 . . .')
         #something here
 
