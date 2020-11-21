@@ -263,7 +263,7 @@ class Model:
     #
     def FormatMenuItens(self, menuItens):
         menu = Texttable()
-        
+
         header = ['Codigo', 'Nome Produto', 'Descrição', 'Preço']
         menu.header(header)
 
@@ -284,3 +284,54 @@ class Model:
         menuTable = menu.draw()
 
         return menuTable
+
+
+    ### Check if a product exists in the database
+    #
+    # @param   integer productId - product id
+    #
+    # @return   boolean
+    #
+    def CheckProductInDB(self, productId):
+        conn = self.CreateDBConnection(self.dbFile)
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute("SELECT id FROM Products")
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+               if productId == row[0]:
+                   return True
+            
+            return False
+
+
+    ### Update data about a product
+    #
+    # @param   integer productId - product id
+    # @param   object productData - new data to be updated
+    #
+    # @return   boolean
+    #
+    def UpdateProductData(self, productId, productData):
+        productName       = productData['productName']
+        producDescription = productData['producDescription']
+        pricePerUnit      = productData['pricePerUnit']
+
+        sql = ''' UPDATE Products
+              SET name = '%s', 
+                  description = '%s', 
+                  unitPrice = %s
+              WHERE id = %s''' % (productName, producDescription, pricePerUnit, productId)
+
+        conn = self.CreateDBConnection(self.dbFile)
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+
+            return True
+        return False

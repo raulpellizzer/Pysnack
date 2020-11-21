@@ -134,6 +134,33 @@ class View:
         return productData
 
     
+    ### Print menu itens
+    #
+    #
     def PrintMenuItens(self, menu):
         print('Cardápio:\n')
         print(menu)
+
+
+    ### Requests an ID from the user
+    #
+    # @return   integer
+    #
+    def RequestProductID(self):
+        optionValid = False
+        productId   = -1
+
+        while not(optionValid):
+            try:
+                print('\n')
+                productId = int(input('Entre com o codigo do produto a ser alterado: '))
+
+                if productId > 0:
+                    optionValid = True
+                else:
+                    print('Opção inválida. Entre com um número inteiro positivo.')
+            except:
+                optionValid = False
+                print('Opção inválida. Entre com um número inteiro positivo.')
+
+        return productId
