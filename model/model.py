@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# # Example of bcrypt usage
-# password = "MinhaSenha123"
-# hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
-# print(hashed)
-
 import sqlite3
 import bcrypt
 from sqlite3 import Error
@@ -38,12 +33,11 @@ class Model:
 
         if self.conn is not None:
             self.CreateTable('users')
+            self.CreateTable('products')
             self.conn.close()
 
-            # self.CreateTable('products') # implement
 
-
-    ### Initializes tables for the app
+    ### Created database connection
     #
     # @param   string dbFile - the path for the database file
     #
@@ -66,21 +60,27 @@ class Model:
     # @param   string table - type of table to be created
     #
     def CreateTable(self, table):
-        sqlUsers = """ CREATE TABLE IF NOT EXISTS Users (
+
+        if table == 'users':
+            sql = """ CREATE TABLE IF NOT EXISTS Users (
                             name text NOT NULL,
                             password text NOT NULL
                         ); """
 
-        # sqlProducts = (to be implemented)
+        elif table == 'products':
+            sql = """ CREATE TABLE IF NOT EXISTS Products (
+                            id integer PRIMARY KEY AUTOINCREMENT,
+                            name text NOT NULL,
+                            description text NOT NULL,
+                            unitPrice real
+                        ); """
 
-        if (table == 'users'):
-            try:
-                c = self.conn.cursor()
-                c.execute(sqlUsers)
-            except Error as err:
-                print(err)
-        else:
-            nothing = '' # (to be implemented - sqlProducts)
+        try:
+            c = self.conn.cursor()
+            c.execute(sql)
+
+        except Error as err:
+            print(err)
 
 
     ### Register User in the database
@@ -93,10 +93,10 @@ class Model:
         registerValidation = False
         validation         = self.ValidateCredentials(newCredentials)
         
-        if (validation):
+        if validation:
             userValidation = self.CheckUserInDB(newCredentials['userName'])
 
-            if (userValidation == False):
+            if userValidation == False:
                 registerValidation = self.RegisterUser(newCredentials)
 
         return registerValidation
@@ -137,7 +137,7 @@ class Model:
             conn.close()
 
             for row in rows:
-                if (row[0] == userName):
+                if row[0] == userName:
                     return True
 
             return False
@@ -155,7 +155,7 @@ class Model:
         password          = newCredentials['password']
         encryptedPassword = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
-        sql = ''' INSERT INTO Users (name, password) VALUES ('%s', "%s") ''' % (userName, encryptedPassword) 
+        sql = ''' INSERT INTO Users (name, password) VALUES ('%s', "%s") ''' % (userName, encryptedPassword)
 
         conn = self.CreateDBConnection(self.dbFile)
         if conn is not None:
@@ -194,7 +194,32 @@ class Model:
                 dbPassword = dbPassword[2:len(dbPassword)-1]
                 dbPassword = bytes(dbPassword, 'utf8')
 
-                if (login == dbUserName and bcrypt.checkpw(password.encode('utf8'), dbPassword  )):
+                if login == dbUserName and bcrypt.checkpw(password.encode('utf8'), dbPassword):
                     auth = True
 
         return auth
+
+
+    ### Inserts a new product into the database
+    #
+    # @param   object productData - ata about the new product
+    #
+    # @return   boolean
+    #
+    def RegisterNewProduct(self, productData):
+        productName       = productData['productName']
+        producDescription = productData['producDescription']
+        pricePerUnit      = productData['pricePerUnit']
+
+        sql = ''' INSERT INTO Products (name, description, unitPrice)
+                    VALUES ('%s', "%s", "%s") ''' % (productName, producDescription, pricePerUnit)
+
+        conn = self.CreateDBConnection(self.dbFile)
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+
+            return True
+        return False
