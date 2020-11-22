@@ -168,7 +168,7 @@ class Model:
         password          = newCredentials['password']
         encryptedPassword = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
-        sql = ''' INSERT INTO Users (name, password) VALUES ('%s', "%s") ''' % (userName, encryptedPassword)
+        sql = ''' INSERT INTO Users (name, password) VALUES ('%s', '%s') ''' % (userName, encryptedPassword)
 
         conn = self.CreateDBConnection(self.dbFile)
         if conn is not None:
@@ -225,7 +225,7 @@ class Model:
         pricePerUnit      = productData['pricePerUnit']
 
         sql = ''' INSERT INTO Products (name, description, unitPrice)
-                    VALUES ('%s', "%s", "%s") ''' % (productName, producDescription, pricePerUnit)
+                    VALUES ('%s', '%s', '%s') ''' % (productName, producDescription, pricePerUnit)
 
         conn = self.CreateDBConnection(self.dbFile)
         if conn is not None:
@@ -269,7 +269,7 @@ class Model:
 
     ### Format data into a table format
     #
-    # @param   arrray menuItens - product data
+    # @param   array menuItens - product data
     #
     # @return   string
     #
@@ -400,7 +400,7 @@ class Model:
 
     ### Format orders data into a table format
     #
-    # @param   arrray fullOrder - orders data
+    # @param   array fullOrder - orders data
     #
     # @return   string
     #
@@ -432,7 +432,7 @@ class Model:
 
     ### Calculates the total order amount
     #
-    # @param   arrray fullOrder - orders data
+    # @param   array fullOrder - orders data
     #
     # @return   float
     #
@@ -448,7 +448,7 @@ class Model:
 
     ### Formats the order itens into a string for the database
     #
-    # @param   arrray fullOrder - orders data
+    # @param   array fullOrder - orders data
     #
     # @return   string
     #
@@ -460,3 +460,29 @@ class Model:
 
         orderString = orderString.strip()
         return orderString
+
+
+    ### Register the sale (order) in the database
+    #
+    # @param   string clientName - client name
+    # @param   string orderItens - order itens
+    # @param   float total - total amount of the order
+    # @param   string payment - payment method
+    # @param   float exchange - order exchange
+    # @param   string orderDate - date of the order
+    #
+    # @return   boolean
+    #
+    def RegisterSale(self, clientName, orderItens, total, payment, exchange, orderDate):
+        sql = ''' INSERT INTO Orders (clientName, itens, total, payment, exchange, date) 
+                VALUES ('%s', '%s', %s, '%s', %s, '%s') ''' % (clientName, orderItens, total, payment, exchange, orderDate)
+
+        conn = self.CreateDBConnection(self.dbFile)
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+
+            return True
+        return False

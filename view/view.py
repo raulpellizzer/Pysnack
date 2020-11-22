@@ -23,7 +23,7 @@ class View:
         print('3 - Remover Produto')
         print('4 - Exibir Menu')
         print('5 - Novo Pedido')
-        print('6 - Ver Estatísticas')
+        print('6 - Ver Pedidos')
         print('7 - Sobre o PySnack')
         print('8 - Contate o Suporte')
         print('9 - Sair\n')

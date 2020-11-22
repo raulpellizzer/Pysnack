@@ -139,7 +139,7 @@ class Controller:
 
     ### Format orders data into a table format
     #
-    # @param   arrray fullOrder - orders data
+    # @param   array fullOrder - orders data
     #
     # @return   string
     #
@@ -150,7 +150,7 @@ class Controller:
 
     ### Calculates the total order amount
     #
-    # @param   arrray fullOrder - orders data
+    # @param   array fullOrder - orders data
     #
     # @return   float
     #
@@ -161,13 +161,30 @@ class Controller:
 
     ### Formats the order itens into a string for the database
     #
-    # @param   arrray fullOrder - orders data
+    # @param   array fullOrder - orders data
     #
     # @return   string
     #
     def StringfyOrderItens(self, fullOrder):
         orderString = self.model.StringfyOrderItens(fullOrder)
         return orderString
+
+
+    ### Register the sale (order) in the database
+    #
+    # @param   string clientName - client name
+    # @param   string orderItens - order itens
+    # @param   float total - total amount of the order
+    # @param   string payment - payment method
+    # @param   float exchange - order exchange
+    # @param   string orderDate - date of the order
+    #
+    # @return   boolean
+    #
+    def RegisterSale(self, clientName, orderItens, total, payment, exchange, orderDate):
+        result = self.model.RegisterSale(clientName, orderItens, total, payment, exchange, orderDate)
+        return result
+
 
 
 
@@ -325,13 +342,7 @@ while controller.menuOption != 9:
 
             action = controller.view.PrintOrderScreen()
 
-        # clientName text NOT NULL,
-        # itens text NOT NULL,
-        # total real,
-        # payment text NOT NULL,
-        # exchange real,
-        # date text NOT NULL
-
+        # Place order
         if len(fullOrder) > 0:
             clientName  = controller.view.GetClientName()
             total       = controller.CalculateOrderValue(fullOrder)
@@ -339,37 +350,19 @@ while controller.menuOption != 9:
             exchange    = float(paymentData['amount']) - float(total)
             orderDate   = datetime.datetime.now()
             orderItens  = controller.StringfyOrderItens(fullOrder)
+            result      = controller.RegisterSale(clientName, orderItens, total, paymentData['payment'], exchange, orderDate)
 
+            if result:
+                message = 'Pedido efetuado com sucesso!'
+                controller.view.PrintMessage(message)
 
-            
-
-            # print('Order data:\n')
-            # print(total)
-            # print(paymentData['amount'])
-            # print(paymentData['payment'])
-            # print(exchange)
-
-            # Insert to Orders table
-            # Generate Ticket
-
-
-
-
+            # TO-DO: Generate Ticket
 
 
         else:
             print('Voltando ao menu principal ...\n')
 
-
-
-
-
-
-
-
-        
-
-    elif controller.menuOption == 6:       # Ver Estatísticas (?)
+    elif controller.menuOption == 6:       # See Orders
 
         print('You choose option 6 . . .')
         #something here
