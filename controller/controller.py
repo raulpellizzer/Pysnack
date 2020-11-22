@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import datetime
 import time
 import sys
 import os
@@ -145,6 +146,28 @@ class Controller:
     def FormatOrderToTable(self, fullOrder):
         formattedOrder = self.model.FormatOrderToTable(fullOrder)
         return formattedOrder
+
+
+    ### Calculates the total order amount
+    #
+    # @param   arrray fullOrder - orders data
+    #
+    # @return   float
+    #
+    def CalculateOrderValue(self, fullOrder):
+        totalValue = self.model.CalculateOrderValue(fullOrder)
+        return totalValue
+
+
+    ### Formats the order itens into a string for the database
+    #
+    # @param   arrray fullOrder - orders data
+    #
+    # @return   string
+    #
+    def StringfyOrderItens(self, fullOrder):
+        orderString = self.model.StringfyOrderItens(fullOrder)
+        return orderString
 
 
 
@@ -311,9 +334,20 @@ while controller.menuOption != 9:
 
         if len(fullOrder) > 0:
             clientName  = controller.view.GetClientName()
-            # total       = controller.CalculateOrderValue(fullOrder) # Implement next
+            total       = controller.CalculateOrderValue(fullOrder)
             paymentData = controller.view.GetPaymentData(total)
-            exchange    = paymentData['amount'] - total
+            exchange    = float(paymentData['amount']) - float(total)
+            orderDate   = datetime.datetime.now()
+            orderItens  = controller.StringfyOrderItens(fullOrder)
+
+
+            
+
+            # print('Order data:\n')
+            # print(total)
+            # print(paymentData['amount'])
+            # print(paymentData['payment'])
+            # print(exchange)
 
             # Insert to Orders table
             # Generate Ticket

@@ -428,3 +428,35 @@ class Model:
         bagTable = bag.draw()
 
         return bagTable
+
+
+    ### Calculates the total order amount
+    #
+    # @param   arrray fullOrder - orders data
+    #
+    # @return   float
+    #
+    def CalculateOrderValue(self, fullOrder):
+        totalValue = 0
+
+        for item in fullOrder:
+            totalValue = totalValue + (item['quantity']*item['unitPrice'])
+
+        totalValue = ('%.2f' % totalValue)
+        return totalValue
+
+
+    ### Formats the order itens into a string for the database
+    #
+    # @param   arrray fullOrder - orders data
+    #
+    # @return   string
+    #
+    def StringfyOrderItens(self, fullOrder):
+        orderString = ''
+
+        for order in fullOrder:
+            orderString = orderString + '%s x %s\n' % (str(order['quantity']), str(order['productName']))
+
+        orderString = orderString.strip()
+        return orderString

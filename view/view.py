@@ -283,5 +283,3 @@ class View:
                 print('Opção Inválida, digite novamente')
 
         return payment
-
-            
