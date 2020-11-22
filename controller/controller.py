@@ -186,6 +186,14 @@ class Controller:
         return result
 
 
+    ### Show orders done
+    #
+    #
+    def ShowOrderItens(self):
+        orders = self.model.GetOrderItens()
+        self.view.PrintOrderItens(orders)
+
+
 
 
 
@@ -196,36 +204,36 @@ controller = Controller()
 controller.userLoggedIn = False
 controller.InitializeSetup()
 
-# controller.PrintLoginScreen()
-# while not(controller.userLoggedIn):
-#     if controller.loginOption == 1:
+controller.PrintLoginScreen()
+while not(controller.userLoggedIn):
+    if controller.loginOption == 1:
 
-#         credentials = controller.view.GetUserCredentials()
-#         auth = controller.AuthenticateUser(credentials)
+        credentials = controller.view.GetUserCredentials()
+        auth = controller.AuthenticateUser(credentials)
 
-#         if auth:
-#             controller.view.PrintMessage('Usuário Autenticado com sucesso!\n')
-#             controller.userLoggedIn = True
-#             break
-#         else:
-#             controller.view.PrintMessage('Usuário ou senha incorretos.\n')
+        if auth:
+            controller.view.PrintMessage('Usuário Autenticado com sucesso!\n')
+            controller.userLoggedIn = True
+            break
+        else:
+            controller.view.PrintMessage('Usuário ou senha incorretos.\n')
         
-#         time.sleep(3)
-#         controller.PrintLoginScreen()
+        time.sleep(3)
+        controller.PrintLoginScreen()
 
-#     elif controller.loginOption == 2:
-#         newCredentials = controller.view.GetNewUserCredentials()
-#         validation = controller.RegisterNewUser(newCredentials)
+    elif controller.loginOption == 2:
+        newCredentials = controller.view.GetNewUserCredentials()
+        validation = controller.RegisterNewUser(newCredentials)
 
-#         if validation:
-#             message = 'Usuário cadastrado com sucesso!'
-#         else:
-#             message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
+        if validation:
+            message = 'Usuário cadastrado com sucesso!'
+        else:
+            message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
         
-#         controller.view.PrintMessage(message)
+        controller.view.PrintMessage(message)
 
-#         time.sleep(3)
-#         controller.PrintLoginScreen()
+        time.sleep(3)
+        controller.PrintLoginScreen()
 
 
 
@@ -362,11 +370,11 @@ while controller.menuOption != 9:
         else:
             print('Voltando ao menu principal ...\n')
 
-    elif controller.menuOption == 6:       # See Orders
+    # See Orders
+    elif controller.menuOption == 6:
+        controller.ShowOrderItens()
 
-        print('You choose option 6 . . .')
-        #something here
-
+    # About Pysnack
     elif controller.menuOption == 7:
         controller.PrintAboutApp()
 

@@ -16,7 +16,7 @@ class View:
     # @return   integer
     #
     def PrintMainMenu(self):
-        print('############## Lanchonete PySnack ##############')
+        print('\n############## Lanchonete PySnack ##############')
         print('Escolha a opção desejada . . .\n')
         print('1 - Cadastrar Novo Produto')
         print('2 - Alterar Produto')
@@ -47,7 +47,7 @@ class View:
     # @return   integer
     #
     def PrintLoginScreen(self):
-        print('############## Lanchonete PySnack ##############')
+        print('\n############## Lanchonete PySnack ##############')
         print('Escolha a opção desejada . . .\n')
         print('1 - Entrar')
         print('2 - Registrar Novo Usuário')
@@ -142,6 +142,15 @@ class View:
     def PrintMenuItens(self, menu):
         print('Cardápio:\n')
         print(menu)
+
+
+    ### Print menu itens
+    #
+    # @param   string orders - orders itens table
+    #
+    def PrintOrderItens(self, orders):
+        print('Pedidos:\n')
+        print(orders)
 
 
     ### Requests an ID from the user
