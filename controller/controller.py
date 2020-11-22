@@ -114,6 +114,17 @@ class Controller:
         return result
 
 
+    ### Deletes a product
+    #
+    # @param   integer productId - product id
+    #
+    # @return   boolean
+    #
+    def DeleteProduct(self, productId):
+        result = self.model.DeleteProduct(productId)
+        return result
+
+
 
 
 
@@ -160,7 +171,7 @@ while not(controller.userLoggedIn):
 controller.PrintMainMenu()
 
 while controller.menuOption != 9:
-    if controller.menuOption == 1:         # Cadastrar Novo Produto
+    if controller.menuOption == 1:
 
         productData = controller.view.RequestProductData()
         result      = controller.RegisterNewProduct(productData)
@@ -172,7 +183,7 @@ while controller.menuOption != 9:
 
         controller.view.PrintMessage(message)
 
-    elif controller.menuOption == 2:       # Alterar Produto
+    elif controller.menuOption == 2:
 
         controller.ShowMenuItens()
         productId = controller.view.RequestProductID()
@@ -193,12 +204,27 @@ while controller.menuOption != 9:
             message = 'Produto não localizado!'
             controller.view.PrintMessage(message)
 
-    elif controller.menuOption == 3:       # Remover Produto
+    elif controller.menuOption == 3:
 
-        print('You choose option 3 . . .')
-        #something here
+        controller.ShowMenuItens()
+        productId = controller.view.RequestProductID()
+        status    = controller.CheckProductInDB(productId) 
 
-    elif controller.menuOption == 4:       # Exibir Menu (comidas e bebidas, mostrar itens disponiveis)
+        if status:
+            result = controller.DeleteProduct(productId)
+
+            if result:
+                message = 'Produto deletado com sucesso!'
+            else: 
+                message = 'Ocorreu um erro ao deletar o produto. Tente novamente.'
+
+            controller.view.PrintMessage(message)
+
+        else:
+            message = 'Produto não localizado!'
+            controller.view.PrintMessage(message)
+
+    elif controller.menuOption == 4:
         controller.ShowMenuItens()
 
     elif controller.menuOption == 5:       # Novo Pedido
@@ -211,7 +237,7 @@ while controller.menuOption != 9:
         print('You choose option 6 . . .')
         #something here
 
-    elif controller.menuOption == 7:       # Sobre
+    elif controller.menuOption == 7:
         controller.PrintAboutApp()
 
     elif controller.menuOption == 8:       # Contate o Suporte
@@ -219,7 +245,7 @@ while controller.menuOption != 9:
         print('You choose option 8 . . .')
         #something here
 
-    elif controller.menuOption == 9:       # Sair
+    elif controller.menuOption == 9:
         break
 
     time.sleep(5)
