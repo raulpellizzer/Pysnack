@@ -125,9 +125,26 @@ class Controller:
         return result
 
 
+    ### Retrieve data about a given product
+    #
+    # @param   integer productId - product id
+    #
+    # @return   object
+    #
     def GetProductDataById(self, productId):
         productData = self.model.GetProductDataById(productId)
         return productData
+
+
+    ### Format orders data into a table format
+    #
+    # @param   arrray fullOrder - orders data
+    #
+    # @return   string
+    #
+    def FormatOrderToTable(self, fullOrder):
+        formattedOrder = self.model.FormatOrderToTable(fullOrder)
+        return formattedOrder
 
 
 
@@ -275,18 +292,19 @@ while controller.menuOption != 9:
 
             # Check current order so far
             elif action == 2:
-                print('Sacola:\n')
 
                 if len(fullOrder) > 0:
-                    for item in fullOrder:
-                        print(item)
+                    formattedOrder = controller.FormatOrderToTable(fullOrder)
+                    print('Sacola:\n')
+                    print(formattedOrder)
                 else:
                     print('Nenhum item foi adicionado até o momento.\n')
-
 
             action = controller.view.PrintOrderScreen()
 
 
+        # Generate Ticket
+        # Insert to Orders table
         print('Pedido finalizado!')
 
 

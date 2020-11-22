@@ -102,6 +102,7 @@ class View:
 
     ### Prints a message for the user
     #
+    # @param   string message - message to be printed
     #
     def PrintMessage(self, message):
         print(message)
@@ -136,6 +137,7 @@ class View:
     
     ### Print menu itens
     #
+    # @param   string menu - menu itens table
     #
     def PrintMenuItens(self, menu):
         print('Cardápio:\n')
@@ -189,6 +191,10 @@ class View:
                 print('Opção Inválida, digite novamente')
 
 
+    ### Print menu itens
+    #
+    # @param   string productName - name of the product
+    #
     def RequestProductQuantity(self, productName):
         print('Produto selecionado: ' + productName)
 

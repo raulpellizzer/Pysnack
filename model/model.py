@@ -369,6 +369,12 @@ class Model:
         return False
 
 
+    ### Retrieve data about a given product
+    #
+    # @param   integer productId - product id
+    #
+    # @return   object
+    #
     def GetProductDataById(self, productId):
         productName = ''
         conn = self.CreateDBConnection(self.dbFile)
@@ -390,3 +396,35 @@ class Model:
             }
 
             return data
+
+
+    ### Format orders data into a table format
+    #
+    # @param   arrray fullOrder - orders data
+    #
+    # @return   string
+    #
+    def FormatOrderToTable(self, fullOrder):
+        bag = Texttable()
+
+        header = ['Codigo', 'Nome Produto', 'Quantidade', 'Preço Unidade', 'Sub Total']
+        bag.header(header)
+
+        for order in fullOrder:
+            productId   = order['productId']
+            productName = order['productName']
+            quantity    = order['quantity']
+            unitPrice   = order['unitPrice']
+            subTotal    = quantity*unitPrice
+
+            row = [productId, productName, quantity, unitPrice, subTotal]
+            bag.add_row(row)
+
+        bag.set_cols_width([6, 25, 10, 10, 10])
+        bag.set_cols_align(['l','l','l', 'l', 'l'])
+        bag.set_cols_valign(['m','m', 'm', 'm', 'm'])
+        bag.set_deco(bag.HEADER | bag.VLINES)
+        bag.set_chars(['-','|','+','#'])
+        bagTable = bag.draw()
+
+        return bagTable
