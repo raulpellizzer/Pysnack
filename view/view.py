@@ -153,7 +153,7 @@ class View:
         while not(optionValid):
             try:
                 print('\n')
-                productId = int(input('Entre com o codigo do produto a ser alterado: '))
+                productId = int(input('Entre com o codigo do produto: '))
 
                 if productId > 0:
                     optionValid = True

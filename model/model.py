@@ -335,3 +335,23 @@ class Model:
 
             return True
         return False
+
+
+    ### Deletes a product
+    #
+    # @param   integer productId - product id
+    #
+    # @return   boolean
+    #
+    def DeleteProduct(self, productId):
+        sql = ''' DELETE FROM Products WHERE id = %s''' % (productId)
+
+        conn = self.CreateDBConnection(self.dbFile)
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+
+            return True
+        return False
