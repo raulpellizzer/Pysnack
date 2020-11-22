@@ -24,7 +24,7 @@ class Controller:
     #
     #
     def PrintMainMenu(self):
-        # os.system('cls')
+        os.system('cls')
         self.menuOption = self.view.PrintMainMenu()
 
 
@@ -125,6 +125,11 @@ class Controller:
         return result
 
 
+    def GetProductDataById(self, productId):
+        productData = self.model.GetProductDataById(productId)
+        return productData
+
+
 
 
 
@@ -133,37 +138,37 @@ class Controller:
 controller = Controller()
 controller.userLoggedIn = False
 controller.InitializeSetup()
-controller.PrintLoginScreen()
 
-while not(controller.userLoggedIn):
-    if controller.loginOption == 1:
+# controller.PrintLoginScreen()
+# while not(controller.userLoggedIn):
+#     if controller.loginOption == 1:
 
-        credentials = controller.view.GetUserCredentials()
-        auth = controller.AuthenticateUser(credentials)
+#         credentials = controller.view.GetUserCredentials()
+#         auth = controller.AuthenticateUser(credentials)
 
-        if auth:
-            controller.view.PrintMessage('Usuário Autenticado com sucesso!\n')
-            controller.userLoggedIn = True
-            break
-        else:
-            controller.view.PrintMessage('Usuário ou senha incorretos.\n')
+#         if auth:
+#             controller.view.PrintMessage('Usuário Autenticado com sucesso!\n')
+#             controller.userLoggedIn = True
+#             break
+#         else:
+#             controller.view.PrintMessage('Usuário ou senha incorretos.\n')
         
-        time.sleep(3)
-        controller.PrintLoginScreen()
+#         time.sleep(3)
+#         controller.PrintLoginScreen()
 
-    elif controller.loginOption == 2:
-        newCredentials = controller.view.GetNewUserCredentials()
-        validation = controller.RegisterNewUser(newCredentials)
+#     elif controller.loginOption == 2:
+#         newCredentials = controller.view.GetNewUserCredentials()
+#         validation = controller.RegisterNewUser(newCredentials)
 
-        if validation:
-            message = 'Usuário cadastrado com sucesso!'
-        else:
-            message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
+#         if validation:
+#             message = 'Usuário cadastrado com sucesso!'
+#         else:
+#             message = 'Não foi possível cadastrar o usuário. Tente um novo nome de usuário.'
         
-        controller.view.PrintMessage(message)
+#         controller.view.PrintMessage(message)
 
-        time.sleep(3)
-        controller.PrintLoginScreen()
+#         time.sleep(3)
+#         controller.PrintLoginScreen()
 
 
 
@@ -171,8 +176,9 @@ while not(controller.userLoggedIn):
 controller.PrintMainMenu()
 
 while controller.menuOption != 9:
-    if controller.menuOption == 1:
 
+    # Register New Product
+    if controller.menuOption == 1:
         productData = controller.view.RequestProductData()
         result      = controller.RegisterNewProduct(productData)
 
@@ -183,8 +189,8 @@ while controller.menuOption != 9:
 
         controller.view.PrintMessage(message)
 
+    # Update Product
     elif controller.menuOption == 2:
-
         controller.ShowMenuItens()
         productId = controller.view.RequestProductID()
         status    = controller.CheckProductInDB(productId) 
@@ -204,8 +210,8 @@ while controller.menuOption != 9:
             message = 'Produto não localizado!'
             controller.view.PrintMessage(message)
 
+    # Remove Product
     elif controller.menuOption == 3:
-
         controller.ShowMenuItens()
         productId = controller.view.RequestProductID()
         status    = controller.CheckProductInDB(productId) 
@@ -224,13 +230,73 @@ while controller.menuOption != 9:
             message = 'Produto não localizado!'
             controller.view.PrintMessage(message)
 
+    # Show Menu Itens
     elif controller.menuOption == 4:
         controller.ShowMenuItens()
 
+    # New Order
     elif controller.menuOption == 5:       # Novo Pedido
+        fullOrder = []
+        option    = 0
 
-        print('You choose option 5 . . .')
-        #something here
+        controller.ShowMenuItens()
+        action = controller.view.PrintOrderScreen()
+
+        while action != 3:
+
+            # Add new item to the order
+            if action == 1:
+                productId = controller.view.RequestProductID()
+                status    = controller.CheckProductInDB(productId)
+
+                if status:
+                    productData = controller.GetProductDataById(productId)
+                    productName = productData['productName']
+
+                    if productName != '':
+                        quantity = controller.view.RequestProductQuantity(productData['productName'])
+
+                        item = {
+                            "productId": productId,
+                            "productName": productData['productName'],
+                            "quantity": quantity,
+                            "unitPrice": productData['unitPrice']
+                        }
+                        
+                        fullOrder.append(item)
+                        print('Item adicionado a sacola!\n')
+                        item = {}
+
+                    else:
+                        print('Ocorreu um erro inesperado. Tente novamente.')
+
+                else:
+                    print('Produto não localizado')
+
+            # Check current order so far
+            elif action == 2:
+                print('Sacola:\n')
+
+                if len(fullOrder) > 0:
+                    for item in fullOrder:
+                        print(item)
+                else:
+                    print('Nenhum item foi adicionado até o momento.\n')
+
+
+            action = controller.view.PrintOrderScreen()
+
+
+        print('Pedido finalizado!')
+
+
+
+
+
+
+
+
+        
 
     elif controller.menuOption == 6:       # Ver Estatísticas (?)
 

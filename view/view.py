@@ -164,3 +164,45 @@ class View:
                 print('Opção inválida. Entre com um número inteiro positivo.')
 
         return productId
+
+
+    ### Prints the orders screen
+    #
+    # @return   integer
+    #
+    def PrintOrderScreen(self):
+        print('\n1 - Adicionar item a sacola')
+        print('2 - Ver sacola')
+        print('3 - Finalizar pedido')
+
+        optionValid = False
+        while not(optionValid):
+            try:
+                option = int(input('Opção: '))
+                if option > 0 and option < 4:
+                    optionValid = True
+                    return option
+                else:
+                    print('Opção Inválida, digite novamente')
+
+            except:
+                print('Opção Inválida, digite novamente')
+
+
+    def RequestProductQuantity(self, productName):
+        print('Produto selecionado: ' + productName)
+
+        optionValid = False
+        while not(optionValid):
+            try:
+                option = int(input('Quantidade desejada: '))
+
+                if option > 0:
+                    optionValid = True
+                    return option
+                
+                else:
+                    print('Valor não permitido. Digite novamente')
+
+            except:
+                print('Opção Inválida, digite novamente')

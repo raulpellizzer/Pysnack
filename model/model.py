@@ -35,6 +35,7 @@ class Model:
         if self.conn is not None:
             self.CreateTable('users')
             self.CreateTable('products')
+            self.CreateTable('orders')
             self.conn.close()
 
 
@@ -74,6 +75,17 @@ class Model:
                             name text NOT NULL,
                             description text NOT NULL,
                             unitPrice real
+                        ); """
+
+        elif table == 'orders':
+            sql = """ CREATE TABLE IF NOT EXISTS Orders (
+                            id integer PRIMARY KEY AUTOINCREMENT,
+                            clientName text NOT NULL,
+                            itens text NOT NULL,
+                            total real,
+                            payment text NOT NULL,
+                            exchange real,
+                            date text NOT NULL
                         ); """
 
         try:
@@ -355,3 +367,26 @@ class Model:
 
             return True
         return False
+
+
+    def GetProductDataById(self, productId):
+        productName = ''
+        conn = self.CreateDBConnection(self.dbFile)
+        sql = ''' SELECT name, unitPrice FROM Products WHERE id = %s''' % (productId)
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+                productName = row[0]
+                unitPrice   = row[1]
+
+            data = {
+                "productName": productName,
+                "unitPrice": unitPrice
+            }
+
+            return data
