@@ -317,7 +317,6 @@ while controller.menuOption != 9:
     # New Order
     elif controller.menuOption == 5:
         fullOrder = []
-        option    = 0
 
         controller.ShowMenuItens()
         action = controller.view.PrintOrderScreen()
