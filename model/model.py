@@ -567,7 +567,7 @@ class Model:
     def GenerateTicket(self, clientName, orderItens, total, paymentData, exchange, orderDate):
         ticket = Texttable()
 
-        header = ['Cupom Fiscal']
+        header = ['Cupom Fiscal - Lanchonete PySnack']
         ticket.header(header)
 
         clientName = 'Nome Cliente: %s\n' % (clientName)
@@ -578,18 +578,25 @@ class Model:
         row = [orderItens]
         ticket.add_row(row)
 
-        total = 'Valor total: %.2f' % (float(total))
+        total = 'Valor Total Pedido: %.2f' % (float(total))
         row = [total]
         ticket.add_row(row)
 
-        # CONTINUE FROM HERE - TESTS ALL GOOD SO FAR
-
-        row = [paymentData]
+        paymentMethod = paymentData['payment']
+        paymentMethod = 'Forma de pagamento: %s' % (paymentMethod)
+        row = [paymentMethod]
         ticket.add_row(row)
 
+        paymentAmount = paymentData['amount']
+        paymentAmount = 'Valor do pagamento: %s' % (paymentAmount)
+        row = [paymentAmount]
+        ticket.add_row(row)
+
+        exchange = 'Troco: %s' % (exchange)
         row = [exchange]
         ticket.add_row(row)
 
+        orderDate = 'Data do Pedido: %s' % (orderDate)
         row = [orderDate]
         ticket.add_row(row)
 

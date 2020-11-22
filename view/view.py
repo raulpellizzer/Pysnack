@@ -257,11 +257,11 @@ class View:
 
                     if option == 1:
                         amount  = self.GetPaymentAmount()
-                        payment = 'Cash'
+                        payment = 'Dinheiro'
 
                     elif option == 2:
                         amount  = total
-                        payment = 'Card'
+                        payment = 'Cartão'
 
                     paymentData = {
                         "amount": amount,

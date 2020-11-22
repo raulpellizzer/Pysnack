@@ -371,15 +371,15 @@ while controller.menuOption != 9:
             total       = controller.CalculateOrderValue(fullOrder)
             paymentData = controller.view.GetPaymentData(total)
             exchange    = float(paymentData['amount']) - float(total)
+            exchange    = round(exchange, 2)
             orderDate   = datetime.datetime.now()
             orderItens  = controller.StringfyOrderItens(fullOrder)
-            # result      = controller.RegisterSale(clientName, orderItens, total, paymentData['payment'], exchange, orderDate)
+            result      = controller.RegisterSale(clientName, orderItens, total, paymentData['payment'], exchange, orderDate)
 
-            result = True # Delete later
             if result:
-                message = 'Pedido efetuado com sucesso! Cupom fiscal abaixo:\n\n'
+                message = 'Pedido efetuado com sucesso! Cupom fiscal abaixo:\n'
                 controller.view.PrintMessage(message)
-                ticket = controller.GenerateTicket(clientName, orderItens, total, paymentData, exchange, orderDate) # Implementing
+                ticket = controller.GenerateTicket(clientName, orderItens, total, paymentData, exchange, orderDate)
                 controller.view.PrintMessage(ticket)
 
             else:
