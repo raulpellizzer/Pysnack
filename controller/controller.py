@@ -194,6 +194,21 @@ class Controller:
         self.view.PrintOrderItens(orders)
 
 
+    ### Generates the ticket for the user
+    #
+    # @param   string clientName - client name
+    # @param   string orderItens - order itens
+    # @param   float total - total amount of the order
+    # @param   object payment - data about payment method
+    # @param   float exchange - order exchange
+    # @param   string orderDate - date of the order
+    #
+    # @return   string
+    #
+    def GenerateTicket(self, clientName, orderItens, total, paymentData, exchange, orderDate):
+        ticket = self.model.GenerateTicket(clientName, orderItens, total, paymentData, exchange, orderDate)
+        return ticket
+
 
 
 
@@ -358,14 +373,18 @@ while controller.menuOption != 9:
             exchange    = float(paymentData['amount']) - float(total)
             orderDate   = datetime.datetime.now()
             orderItens  = controller.StringfyOrderItens(fullOrder)
-            result      = controller.RegisterSale(clientName, orderItens, total, paymentData['payment'], exchange, orderDate)
+            # result      = controller.RegisterSale(clientName, orderItens, total, paymentData['payment'], exchange, orderDate)
 
+            result = True # Delete later
             if result:
-                message = 'Pedido efetuado com sucesso!'
+                message = 'Pedido efetuado com sucesso! Cupom fiscal abaixo:\n\n'
                 controller.view.PrintMessage(message)
+                ticket = controller.GenerateTicket(clientName, orderItens, total, paymentData, exchange, orderDate) # Implementing
+                controller.view.PrintMessage(ticket)
 
-            # TO-DO: Generate Ticket
-
+            else:
+                message = 'Ocorreu um erro nesta venda. Tente novamente.\n'
+                controller.view.PrintMessage(message)
 
         else:
             print('Voltando ao menu principal ...\n')
