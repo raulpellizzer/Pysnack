@@ -24,7 +24,7 @@ class Controller:
     #
     #
     def PrintMainMenu(self):
-        os.system('cls')
+        # os.system('cls')
         self.menuOption = self.view.PrintMainMenu()
 
 
@@ -252,7 +252,7 @@ while controller.menuOption != 9:
         controller.ShowMenuItens()
 
     # New Order
-    elif controller.menuOption == 5:       # Novo Pedido
+    elif controller.menuOption == 5:
         fullOrder = []
         option    = 0
 
@@ -271,11 +271,11 @@ while controller.menuOption != 9:
                     productName = productData['productName']
 
                     if productName != '':
-                        quantity = controller.view.RequestProductQuantity(productData['productName'])
+                        quantity = controller.view.RequestProductQuantity(productName)
 
                         item = {
                             "productId": productId,
-                            "productName": productData['productName'],
+                            "productName": productName,
                             "quantity": quantity,
                             "unitPrice": productData['unitPrice']
                         }
@@ -302,10 +302,29 @@ while controller.menuOption != 9:
 
             action = controller.view.PrintOrderScreen()
 
+        # clientName text NOT NULL,
+        # itens text NOT NULL,
+        # total real,
+        # payment text NOT NULL,
+        # exchange real,
+        # date text NOT NULL
 
-        # Generate Ticket
-        # Insert to Orders table
-        print('Pedido finalizado!')
+        if len(fullOrder) > 0:
+            clientName  = controller.view.GetClientName()
+            # total       = controller.CalculateOrderValue(fullOrder) # Implement next
+            paymentData = controller.view.GetPaymentData(total)
+            exchange    = paymentData['amount'] - total
+
+            # Insert to Orders table
+            # Generate Ticket
+
+
+
+
+
+
+        else:
+            print('Voltando ao menu principal ...\n')
 
 
 

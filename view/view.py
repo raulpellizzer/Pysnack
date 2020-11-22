@@ -212,3 +212,76 @@ class View:
 
             except:
                 print('Opção Inválida, digite novamente')
+
+
+    ### Asks for the client name
+    #
+    # @return   string
+    #
+    def GetClientName(self):
+        clientName = ''
+
+        while clientName == '':
+            clientName = str(input('Seu nome? '))
+            clientName = clientName.strip()
+
+        return clientName
+
+
+    ### Asks the client for payment data
+    #
+    # @param   float total - total value from the order
+    #
+    # @return   object
+    #
+    def GetPaymentData(self, total):
+        print('\nForma de pagamento:')
+        print('1 - Dinheiro')
+        print('2 - Cartão')
+
+        optionValid = False
+        while not(optionValid):
+            try:
+                option = int(input('Opção: '))
+                if option > 0 and option < 3:
+                    optionValid = True
+
+                    if option == 1:
+                        amount  = self.GetPaymentAmount()
+                        payment = 'Cash'
+
+                    elif option == 2:
+                        amount  = total
+                        payment = 'Card'
+
+                    paymentData = {
+                        "amount": amount,
+                        "payment": payment
+                    }
+                    return paymentData
+
+                else:
+                    print('Opção Inválida, digite novamente')
+
+            except:
+                print('Opção Inválida, digite novamente')
+
+
+    ### Asks for the amount payed in cash
+    #
+    #
+    # @return   float
+    #
+    def GetPaymentAmount(self):
+        optionValid = False
+        while not(optionValid):
+            try:
+                payment = float(input('Quantia em dinheiro: '))
+                optionValid = True
+
+            except:
+                print('Opção Inválida, digite novamente')
+
+        return payment
+
+            
