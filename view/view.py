@@ -16,14 +16,14 @@ class View:
     # @return   integer
     #
     def PrintMainMenu(self):
-        print('############## Lanchonete PySnack ##############')
+        print('\n############## Lanchonete PySnack ##############')
         print('Escolha a opção desejada . . .\n')
         print('1 - Cadastrar Novo Produto')
         print('2 - Alterar Produto')
         print('3 - Remover Produto')
         print('4 - Exibir Menu')
         print('5 - Novo Pedido')
-        print('6 - Ver Estatísticas')
+        print('6 - Ver Pedidos')
         print('7 - Sobre o PySnack')
         print('8 - Contate o Suporte')
         print('9 - Sair\n')
@@ -47,7 +47,7 @@ class View:
     # @return   integer
     #
     def PrintLoginScreen(self):
-        print('############## Lanchonete PySnack ##############')
+        print('\n############## Lanchonete PySnack ##############')
         print('Escolha a opção desejada . . .\n')
         print('1 - Entrar')
         print('2 - Registrar Novo Usuário')
@@ -102,6 +102,7 @@ class View:
 
     ### Prints a message for the user
     #
+    # @param   string message - message to be printed
     #
     def PrintMessage(self, message):
         print(message)
@@ -136,10 +137,20 @@ class View:
     
     ### Print menu itens
     #
+    # @param   string menu - menu itens table
     #
     def PrintMenuItens(self, menu):
         print('Cardápio:\n')
         print(menu)
+
+
+    ### Print menu itens
+    #
+    # @param   string orders - orders itens table
+    #
+    def PrintOrderItens(self, orders):
+        print('Pedidos:\n')
+        print(orders)
 
 
     ### Requests an ID from the user
@@ -164,3 +175,120 @@ class View:
                 print('Opção inválida. Entre com um número inteiro positivo.')
 
         return productId
+
+
+    ### Prints the orders screen
+    #
+    # @return   integer
+    #
+    def PrintOrderScreen(self):
+        print('\n1 - Adicionar item a sacola')
+        print('2 - Ver sacola')
+        print('3 - Finalizar pedido')
+
+        optionValid = False
+        while not(optionValid):
+            try:
+                option = int(input('Opção: '))
+                if option > 0 and option < 4:
+                    optionValid = True
+                    return option
+                else:
+                    print('Opção Inválida, digite novamente')
+
+            except:
+                print('Opção Inválida, digite novamente')
+
+
+    ### Print menu itens
+    #
+    # @param   string productName - name of the product
+    #
+    def RequestProductQuantity(self, productName):
+        print('Produto selecionado: ' + productName)
+
+        optionValid = False
+        while not(optionValid):
+            try:
+                option = int(input('Quantidade desejada: '))
+
+                if option > 0:
+                    optionValid = True
+                    return option
+                
+                else:
+                    print('Valor não permitido. Digite novamente')
+
+            except:
+                print('Opção Inválida, digite novamente')
+
+
+    ### Asks for the client name
+    #
+    # @return   string
+    #
+    def GetClientName(self):
+        clientName = ''
+
+        while clientName == '':
+            clientName = str(input('Seu nome? '))
+            clientName = clientName.strip()
+
+        return clientName
+
+
+    ### Asks the client for payment data
+    #
+    # @param   float total - total value from the order
+    #
+    # @return   object
+    #
+    def GetPaymentData(self, total):
+        print('\nForma de pagamento:')
+        print('1 - Dinheiro')
+        print('2 - Cartão')
+
+        optionValid = False
+        while not(optionValid):
+            try:
+                option = int(input('Opção: '))
+                if option > 0 and option < 3:
+                    optionValid = True
+
+                    if option == 1:
+                        amount  = self.GetPaymentAmount()
+                        payment = 'Cash'
+
+                    elif option == 2:
+                        amount  = total
+                        payment = 'Card'
+
+                    paymentData = {
+                        "amount": amount,
+                        "payment": payment
+                    }
+                    return paymentData
+
+                else:
+                    print('Opção Inválida, digite novamente')
+
+            except:
+                print('Opção Inválida, digite novamente')
+
+
+    ### Asks for the amount payed in cash
+    #
+    #
+    # @return   float
+    #
+    def GetPaymentAmount(self):
+        optionValid = False
+        while not(optionValid):
+            try:
+                payment = float(input('Quantia em dinheiro: '))
+                optionValid = True
+
+            except:
+                print('Opção Inválida, digite novamente')
+
+        return payment

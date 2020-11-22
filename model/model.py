@@ -35,6 +35,7 @@ class Model:
         if self.conn is not None:
             self.CreateTable('users')
             self.CreateTable('products')
+            self.CreateTable('orders')
             self.conn.close()
 
 
@@ -74,6 +75,17 @@ class Model:
                             name text NOT NULL,
                             description text NOT NULL,
                             unitPrice real
+                        ); """
+
+        elif table == 'orders':
+            sql = """ CREATE TABLE IF NOT EXISTS Orders (
+                            id integer PRIMARY KEY AUTOINCREMENT,
+                            clientName text NOT NULL,
+                            itens text NOT NULL,
+                            total real,
+                            payment text NOT NULL,
+                            exchange real,
+                            date text NOT NULL
                         ); """
 
         try:
@@ -213,7 +225,7 @@ class Model:
         pricePerUnit      = productData['pricePerUnit']
 
         sql = ''' INSERT INTO Products (name, description, unitPrice)
-                    VALUES ('%s', "%s", "%s") ''' % (productName, producDescription, pricePerUnit)
+                    VALUES ('%s', '%s', '%s') ''' % (productName, producDescription, pricePerUnit)
 
         conn = self.CreateDBConnection(self.dbFile)
         if conn is not None:
@@ -257,7 +269,7 @@ class Model:
 
     ### Format data into a table format
     #
-    # @param   arrray menuItens - product data
+    # @param   array menuItens - product data
     #
     # @return   string
     #
@@ -355,3 +367,187 @@ class Model:
 
             return True
         return False
+
+
+    ### Retrieve data about a given product
+    #
+    # @param   integer productId - product id
+    #
+    # @return   object
+    #
+    def GetProductDataById(self, productId):
+        productName = ''
+        conn = self.CreateDBConnection(self.dbFile)
+        sql = ''' SELECT name, unitPrice FROM Products WHERE id = %s''' % (productId)
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+                productName = row[0]
+                unitPrice   = row[1]
+
+            data = {
+                "productName": productName,
+                "unitPrice": unitPrice
+            }
+
+            return data
+
+
+    ### Format orders data into a table format
+    #
+    # @param   array fullOrder - orders data
+    #
+    # @return   string
+    #
+    def FormatOrderToTable(self, fullOrder):
+        bag = Texttable()
+
+        header = ['Codigo', 'Nome Produto', 'Quantidade', 'Preço Unidade', 'Sub Total']
+        bag.header(header)
+
+        for order in fullOrder:
+            productId   = order['productId']
+            productName = order['productName']
+            quantity    = order['quantity']
+            unitPrice   = order['unitPrice']
+            subTotal    = quantity*unitPrice
+
+            row = [productId, productName, quantity, unitPrice, subTotal]
+            bag.add_row(row)
+
+        bag.set_cols_width([6, 25, 10, 10, 10])
+        bag.set_cols_align(['l','l','l', 'l', 'l'])
+        bag.set_cols_valign(['m','m', 'm', 'm', 'm'])
+        bag.set_deco(bag.HEADER | bag.VLINES)
+        bag.set_chars(['-','|','+','#'])
+        bagTable = bag.draw()
+
+        return bagTable
+
+
+    ### Calculates the total order amount
+    #
+    # @param   array fullOrder - orders data
+    #
+    # @return   float
+    #
+    def CalculateOrderValue(self, fullOrder):
+        totalValue = 0
+
+        for item in fullOrder:
+            totalValue = totalValue + (item['quantity']*item['unitPrice'])
+
+        totalValue = ('%.2f' % totalValue)
+        return totalValue
+
+
+    ### Formats the order itens into a string for the database
+    #
+    # @param   array fullOrder - orders data
+    #
+    # @return   string
+    #
+    def StringfyOrderItens(self, fullOrder):
+        orderString = ''
+
+        for order in fullOrder:
+            orderString = orderString + '%s x %s\n' % (str(order['quantity']), str(order['productName']))
+
+        return orderString
+
+
+    ### Register the sale (order) in the database
+    #
+    # @param   string clientName - client name
+    # @param   string orderItens - order itens
+    # @param   float total - total amount of the order
+    # @param   string payment - payment method
+    # @param   float exchange - order exchange
+    # @param   string orderDate - date of the order
+    #
+    # @return   boolean
+    #
+    def RegisterSale(self, clientName, orderItens, total, payment, exchange, orderDate):
+        sql = ''' INSERT INTO Orders (clientName, itens, total, payment, exchange, date) 
+                VALUES ('%s', '%s', %s, '%s', %s, '%s') ''' % (clientName, orderItens, total, payment, exchange, orderDate)
+
+        conn = self.CreateDBConnection(self.dbFile)
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            conn.close()
+
+            return True
+        return False
+
+
+    ### Retrieves all orders from the database
+    #
+    # @return   string
+    #
+    def GetOrderItens(self):
+        conn       = self.CreateDBConnection(self.dbFile)
+        orderItens = []
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM Orders")
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+                tempRow = {
+                    "orderId": row[0],
+                    "clientName": row[1],
+                    "orderItens": row[2],
+                    "totalValue": row[3],
+                    "paymentMethod": row[4],
+                    "exchange": row[5],
+                    "date": row[6]
+                }
+
+                orderItens.append(tempRow)
+                tempRow = {}
+
+            orderTable = self.FormatOrderItens(orderItens)
+            return orderTable
+
+
+    ### Format data into a table format
+    #
+    # @param   array orderItens - order data
+    #
+    # @return   string
+    #
+    def FormatOrderItens(self, orderItens):
+        order = Texttable()
+
+        header = ['Codigo', 'Nome Cliente', 'Itens', 'Valor Total', 'Pagamento', 'Troco', 'Data']
+        order.header(header)
+
+        for item in orderItens:
+            orderId       = item['orderId']
+            clientName    = item['clientName']
+            orderItens    = item['orderItens']
+            totalValue    = item['totalValue']
+            paymentMethod = item['paymentMethod']
+            exchange      = item['exchange']
+            date          = item['date']
+
+            row = [orderId, clientName, orderItens, totalValue, paymentMethod, exchange, date]
+            order.add_row(row)
+
+        order.set_cols_width([6, 25, 50, 12, 12, 12, 18])
+        order.set_cols_align(['l','l','l', 'l', 'l', 'l', 'l'])
+        order.set_cols_valign(['m','m', 'm', 'm', 'm', 'm', 'm'])
+        order.set_deco(order.HEADER | order.VLINES)
+        order.set_chars(['-','|','+','#'])
+        orderTable = order.draw()
+
+        return orderTable
