@@ -551,3 +551,60 @@ class Model:
         orderTable = order.draw()
 
         return orderTable
+
+
+    ### Generates the ticket for the user
+    #
+    # @param   string clientName - client name
+    # @param   string orderItens - order itens
+    # @param   float total - total amount of the order
+    # @param   object payment - data about payment method
+    # @param   float exchange - order exchange
+    # @param   string orderDate - date of the order
+    #
+    # @return   string
+    #
+    def GenerateTicket(self, clientName, orderItens, total, paymentData, exchange, orderDate):
+        ticket = Texttable()
+
+        header = ['Cupom Fiscal - Lanchonete PySnack']
+        ticket.header(header)
+
+        clientName = 'Nome Cliente: %s\n' % (clientName)
+        row = [clientName]
+        ticket.add_row(row)
+
+        orderItens = 'Produtos:\n%s' % (orderItens)
+        row = [orderItens]
+        ticket.add_row(row)
+
+        total = 'Valor Total Pedido: %.2f' % (float(total))
+        row = [total]
+        ticket.add_row(row)
+
+        paymentMethod = paymentData['payment']
+        paymentMethod = 'Forma de pagamento: %s' % (paymentMethod)
+        row = [paymentMethod]
+        ticket.add_row(row)
+
+        paymentAmount = paymentData['amount']
+        paymentAmount = 'Valor do pagamento: %s' % (paymentAmount)
+        row = [paymentAmount]
+        ticket.add_row(row)
+
+        exchange = 'Troco: %s' % (exchange)
+        row = [exchange]
+        ticket.add_row(row)
+
+        orderDate = 'Data do Pedido: %s' % (orderDate)
+        row = [orderDate]
+        ticket.add_row(row)
+
+        ticket.set_cols_width([75])
+        ticket.set_cols_align(['c'])
+        ticket.set_cols_valign(['m'])
+        ticket.set_deco(ticket.HEADER | ticket.VLINES)
+        ticket.set_chars(['-','|','+','#'])
+        ticketTable = ticket.draw()
+
+        return ticketTable
