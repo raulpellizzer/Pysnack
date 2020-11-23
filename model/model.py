@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from texttable import Texttable
+from zipfile import ZipFile
 from sqlite3 import Error
 import sqlite3
 import bcrypt
+import time
 import json
 import os
 
@@ -651,3 +653,16 @@ class Model:
         jsonData = json.dumps(ordersData, indent = 4)
         with open("../orders.json", "w") as outputFile:
             outputFile.write(jsonData)
+
+
+    ### Compress a file to .zip
+    #
+    # @param   string fileName - name of the file to be zipped
+    #
+    def CompressToZipFile(self, fileName):
+        canProceed = False
+        while not(canProceed):
+            time.sleep(1)
+            canProceed = os.path.isfile(fileName)
+
+        ZipFile('../orders.zip', 'w').write(fileName)
