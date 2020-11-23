@@ -5,6 +5,7 @@ from texttable import Texttable
 from sqlite3 import Error
 import sqlite3
 import bcrypt
+import json
 import os
 
 class Model:
@@ -519,6 +520,37 @@ class Model:
             return orderTable
 
 
+    ### Retrieves all orders from the database, raw mode
+    #
+    # @return   array
+    #
+    def GetRawOrderItens(self):
+        conn       = self.CreateDBConnection(self.dbFile)
+        orderItens = []
+
+        if conn is not None:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM Orders")
+            rows = cur.fetchall()
+            conn.close()
+
+            for row in rows:
+                tempRow = {
+                    "orderId": row[0],
+                    "clientName": row[1],
+                    "orderItens": row[2],
+                    "totalValue": row[3],
+                    "paymentMethod": row[4],
+                    "exchange": row[5],
+                    "date": row[6]
+                }
+
+                orderItens.append(tempRow)
+                tempRow = {}
+
+            return orderItens
+
+
     ### Format data into a table format
     #
     # @param   array orderItens - order data
@@ -608,3 +640,14 @@ class Model:
         ticketTable = ticket.draw()
 
         return ticketTable
+
+
+    ### Retrieves all orders from the database, raw mode
+    #
+    # @param   array ordersData - all orders data
+    #
+    def ExportToJson(self, ordersData):
+
+        jsonData = json.dumps(ordersData, indent = 4)
+        with open("../orders.json", "w") as outputFile:
+            outputFile.write(jsonData)
