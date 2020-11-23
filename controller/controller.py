@@ -227,6 +227,14 @@ class Controller:
         self.model.ExportToJson(ordersData)
 
 
+    ### Compress a file to .zip
+    #
+    # @param   string fileName - name of the file to be zipped
+    #
+    def CompressToZipFile(self, fileName):
+        self.model.CompressToZipFile(fileName)
+
+
 
 controller = Controller()
 controller.userLoggedIn = False
@@ -409,6 +417,8 @@ while controller.menuOption != 9:
     elif controller.menuOption == 8:
         ordersData = controller.GetRawOrderItens()
         controller.ExportToJson(ordersData)
+        controller.CompressToZipFile('../orders.json')
+
         message = 'Os dados de seus pedidos foram exportados com sucesso.'
         controller.view.PrintMessage(message)
 
