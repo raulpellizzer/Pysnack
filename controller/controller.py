@@ -210,8 +210,21 @@ class Controller:
         return ticket
 
 
+    ### Retrieves all orders from the database, raw mode
+    #
+    # @return   array
+    #
+    def GetRawOrderItens(self):
+        ordersData = self.model.GetRawOrderItens()
+        return ordersData
 
 
+    ### Retrieves all orders from the database, raw mode
+    #
+    # @param   array ordersData - all orders data
+    #
+    def ExportToJson(self, ordersData):
+        self.model.ExportToJson(ordersData)
 
 
 
@@ -250,11 +263,7 @@ while not(controller.userLoggedIn):
         time.sleep(3)
         controller.PrintLoginScreen()
 
-
-
-
 controller.PrintMainMenu()
-
 while controller.menuOption != 9:
 
     # Register New Product
@@ -396,10 +405,12 @@ while controller.menuOption != 9:
     elif controller.menuOption == 7:
         controller.PrintAboutApp()
 
-    elif controller.menuOption == 8:       # Contate o Suporte
-
-        print('You choose option 8 . . .')
-        #something here
+    # Export Orders
+    elif controller.menuOption == 8:
+        ordersData = controller.GetRawOrderItens()
+        controller.ExportToJson(ordersData)
+        message = 'Os dados de seus pedidos foram exportados com sucesso.'
+        controller.view.PrintMessage(message)
 
     elif controller.menuOption == 9:
         break

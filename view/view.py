@@ -25,7 +25,7 @@ class View:
         print('5 - Novo Pedido')
         print('6 - Ver Pedidos')
         print('7 - Sobre o PySnack')
-        print('8 - Contate o Suporte')
+        print('8 - Exportar Pedidos')
         print('9 - Sair\n')
 
         optionValid = False
@@ -277,7 +277,6 @@ class View:
 
 
     ### Asks for the amount payed in cash
-    #
     #
     # @return   float
     #

@@ -1,3 +1,4 @@
 /view/__pycache__
 /model/__pycache__
 /controller/__pycache__
+*.json
