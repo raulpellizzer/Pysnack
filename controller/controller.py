@@ -16,6 +16,7 @@ class Controller:
 
     ### Class Constructor
     #
+    #
     def __init__(self):
         self.view  = View()
         self.model = Model()
@@ -25,15 +26,13 @@ class Controller:
     #
     #
     def PrintMainMenu(self):
-        # os.system('cls')
         self.menuOption = self.view.PrintMainMenu()
 
 
-    ### Prints the main menu for the application
+    ### Prints the login menu
     #
     #
     def PrintLoginScreen(self):
-        # os.system('cls')
         self.loginOption = self.view.PrintLoginScreen()
 
 
@@ -199,7 +198,7 @@ class Controller:
     # @param   string clientName - client name
     # @param   string orderItens - order itens
     # @param   float total - total amount of the order
-    # @param   object payment - data about payment method
+    # @param   object paymentData - data about payment method
     # @param   float exchange - order exchange
     # @param   string orderDate - date of the order
     #
@@ -219,7 +218,7 @@ class Controller:
         return ordersData
 
 
-    ### Retrieves all orders from the database, raw mode
+    ### Export orders data to json file
     #
     # @param   array ordersData - all orders data
     #
@@ -227,13 +226,12 @@ class Controller:
         self.model.ExportToJson(ordersData)
 
 
-    ### Compress a file to .zip
+    ### Compress a file to .zip format
     #
     # @param   string fileName - name of the file to be zipped
     #
     def CompressToZipFile(self, fileName):
         self.model.CompressToZipFile(fileName)
-
 
 
 controller = Controller()
@@ -242,6 +240,8 @@ controller.InitializeSetup()
 
 controller.PrintLoginScreen()
 while not(controller.userLoggedIn):
+
+    # Login to application
     if controller.loginOption == 1:
 
         credentials = controller.view.GetUserCredentials()
@@ -254,9 +254,10 @@ while not(controller.userLoggedIn):
         else:
             controller.view.PrintMessage('Usuário ou senha incorretos.\n')
         
-        time.sleep(3)
+        time.sleep(2)
         controller.PrintLoginScreen()
 
+    # Register to application
     elif controller.loginOption == 2:
         newCredentials = controller.view.GetNewUserCredentials()
         validation = controller.RegisterNewUser(newCredentials)
@@ -268,7 +269,7 @@ while not(controller.userLoggedIn):
         
         controller.view.PrintMessage(message)
 
-        time.sleep(3)
+        time.sleep(2)
         controller.PrintLoginScreen()
 
 controller.PrintMainMenu()
@@ -425,5 +426,5 @@ while controller.menuOption != 9:
     elif controller.menuOption == 9:
         break
 
-    time.sleep(5)
+    time.sleep(4)
     controller.PrintMainMenu()
