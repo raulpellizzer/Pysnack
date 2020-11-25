@@ -14,6 +14,7 @@ class Model:
 
     ### Class Constructor
     #
+    #
     def __init__(self):
         self.dbFile = os.getcwd() + '\database\pysnackdb.db'
 
@@ -24,7 +25,7 @@ class Model:
     #
     def PrintAboutApp(self):
         about = 'Este aplicativo foi desenvolvido para a disciplina de Tópicos Especiais em Informática '
-        about = about + 'pelos alunos Carlos Matheus e Raul Pellizzer no ano de 2020.\nEste aplicativo tem como '
+        about = about + 'pelos alunos Carlos Matheus (RA: 2840481711003)\ne Raul Pellizzer (RA: 2840481723043) no ano de 2020. Este aplicativo tem como '
         about = about + 'objetivo auxiliar uma lanchonete a gerenciar seus pedidos.'
         return about
 
@@ -592,7 +593,7 @@ class Model:
     # @param   string clientName - client name
     # @param   string orderItens - order itens
     # @param   float total - total amount of the order
-    # @param   object payment - data about payment method
+    # @param   object paymentData - data about payment method
     # @param   float exchange - order exchange
     # @param   string orderDate - date of the order
     #
@@ -644,7 +645,7 @@ class Model:
         return ticketTable
 
 
-    ### Retrieves all orders from the database, raw mode
+    ### Export orders data to json file
     #
     # @param   array ordersData - all orders data
     #
@@ -655,7 +656,7 @@ class Model:
             outputFile.write(jsonData)
 
 
-    ### Compress a file to .zip
+    ### Compress a file to .zip format
     #
     # @param   string fileName - name of the file to be zipped
     #

@@ -7,6 +7,7 @@ class View:
 
     ### Class Constructor
     #
+    #
     def __init__(self):
         self.start = 'OK'
 
@@ -70,7 +71,6 @@ class View:
     # @return   object
     #
     def GetNewUserCredentials(self):
-        # os.system('cls')
         userName        = str(input('Cadastre seu usuário: '))
         password        = str(input('Cadastre sua senha: '))
         confirmPassword = str(input('Confirme sua senha: '))
@@ -88,7 +88,6 @@ class View:
     # @return   object
     #
     def GetUserCredentials(self):
-        # os.system('cls')
         userName        = str(input('Entre com seu usuário: '))
         password        = str(input('Entre com sua senha: '))
 
@@ -121,6 +120,11 @@ class View:
         while not(optionValid):
             try:
                 pricePerUnit = float(input('Preço de venda por unidade: '))
+
+                while pricePerUnit <= 0:
+                    print('Preço inválido. Digite novamente')
+                    pricePerUnit = float(input('Preço de venda por unidade: '))
+
                 optionValid = True
             except:
                 optionValid = False
@@ -144,7 +148,7 @@ class View:
         print(menu)
 
 
-    ### Print menu itens
+    ### Print order itens
     #
     # @param   string orders - orders itens table
     #
@@ -200,9 +204,11 @@ class View:
                 print('Opção Inválida, digite novamente')
 
 
-    ### Print menu itens
+    ### Request a quantity for a given product from the user
     #
     # @param   string productName - name of the product
+    #
+    # @return   integer
     #
     def RequestProductQuantity(self, productName):
         print('Produto selecionado: ' + productName)
