@@ -361,24 +361,29 @@ while controller.menuOption != 9:
                         }
                         
                         fullOrder.append(item)
-                        print('Item adicionado a sacola!\n')
+                        message = 'Item adicionado a sacola!\n'
+                        controller.view.PrintMessage(message)
                         item = {}
 
                     else:
-                        print('Ocorreu um erro inesperado. Tente novamente.')
+                        message = 'Ocorreu um erro inesperado. Tente novamente.'
+                        controller.view.PrintMessage(message)
 
                 else:
-                    print('Produto não localizado')
+                    message = 'Produto não localizado'
+                    controller.view.PrintMessage(message)
 
             # Check current order so far
             elif action == 2:
 
                 if len(fullOrder) > 0:
                     formattedOrder = controller.FormatOrderToTable(fullOrder)
-                    print('Sacola:\n')
-                    print(formattedOrder)
+                    message = 'Sacola:'
+                    controller.view.PrintMessage(message)
+                    controller.view.PrintMessage(formattedOrder)
                 else:
-                    print('Nenhum item foi adicionado até o momento.\n')
+                    message = 'Nenhum item foi adicionado até o momento.'
+                    controller.view.PrintMessage(message)
 
             action = controller.view.PrintOrderScreen()
 
@@ -404,7 +409,8 @@ while controller.menuOption != 9:
                 controller.view.PrintMessage(message)
 
         else:
-            print('Voltando ao menu principal ...\n')
+            message = 'Voltando ao menu principal ...'
+            controller.view.PrintMessage(message)
 
     # See Orders
     elif controller.menuOption == 6:
